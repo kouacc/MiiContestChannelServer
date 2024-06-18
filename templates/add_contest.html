@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Contest</title>
+</head>
+<body>
+<h1>Add Contest</h1>
+{{if .Error}}
+<p style="color:red;">{{.Error}}</p>
+{{end}}
+<form action="/panel/contests/add" method="post" enctype="multipart/form-data">
+    Contest Name: <input type="text" name="name" required><br>
+    Has Special Award: <input type="checkbox" name="special_award"><br>
+    Thumbnail: <input type="file" name="thumbnail"><br>
+    Souvenir: <input type="file" name="souvenir"><br>
+    Open Time: <input type="date" name="open_time" required><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

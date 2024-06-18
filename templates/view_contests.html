@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contests</title>
+</head>
+<body>
+<h1>There are {{.numberOfContests}} contests</h1>
+<table class="table is-fullwidth is-hoverable is-striped">
+    <thead>
+    <tr>
+        <th scope="col">Contest ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{range .Contests}}
+            <tr>
+                <td>{{ .ContestId }}</td>
+                <td>{{ .Name }}</td>
+                <td>{{ .Status }}</td>
+            </tr>
+        {{end}}
+    </tbody>
+</table>
+<br>
+<br>
+<a href="/panel/contests/add"><button>Add Contest</button></a>
+</body>
+</html>
