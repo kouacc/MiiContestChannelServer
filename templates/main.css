@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+      h1 {
+        @apply text-4xl font-serif font-bold;
+      }
+    }
+    
+@layer utilities {
+        .container {
+            @apply max-w-screen-xl mx-auto lg:px-32 md:px-20 sm:px-10;
+        }
+
+        .main_grid {
+            @apply lg:grid lg:grid-cols-12 lg:gap-8 lg:justify-center px-6
+        }
+
+        .submit_button {
+          @apply cursor-pointer bg-blue-500 px-6 py-2 text-white rounded-lg
+        }
+
+        .input {
+          @apply flex flex-col gap-3
+        }
+    }

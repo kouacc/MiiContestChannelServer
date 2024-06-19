@@ -2,16 +2,28 @@
 <html>
 <head>
     <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="/assets/output.css" rel="stylesheet">
 </head>
-<body>
-<h1>Login</h1>
-{{if .Error}}
-<p style="color:red;">{{.Error}}</p>
-{{end}}
-<form action="/panel/login" method="post">
-    Username: <input type="text" name="username"><br>
-    Password: <input type="password" name="password"><br>
-    <input type="submit" value="Login">
-</form>
+<body class="bg-white dark:bg-slate-800 dark:text-white">
+    <main class="container main_grid py-40">
+        <h1 class="col-start-4 col-span-full">Login</h1>
+        <!-- {{if .Error}}
+        <p style="color:red;">{{.Error}}</p>
+        {{end}} -->
+        <form action="/panel/login" method="post" class="col-start-4 col-span-6 flex flex-col gap-5">
+            <div class="input">
+                <label for="username">Username:</label>
+                <input type="text" name="username" placeholder="Username" class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-2 rounded-lg">
+            </div>
+            <div class="input">
+                <label for="password">Password:</label>
+                <input type="password" name="password" placeholder="Password" class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-2 rounded-lg">
+            </div>
+            <input type="submit" value="Login" class="submit_button">
+        </form>
+    </main>
 </body>
 </html>
