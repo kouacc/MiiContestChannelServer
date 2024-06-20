@@ -31,6 +31,8 @@ func (w *WebPanel) ViewContests(c *gin.Context) {
 	}
 
 	var contests []Contests
+	var activeContests []Contests
+	var waitingContests []Contests
 	for rows.Next() {
 		contest := Contests{}
 		err = rows.Scan(&contest.ContestId, &contest.Name, &contest.Status)
@@ -42,11 +44,21 @@ func (w *WebPanel) ViewContests(c *gin.Context) {
 		}
 
 		contests = append(contests, contest)
+		if contest.Status == "waiting" {
+			activeContests = append(activeContests, contest)
+		} else if contest.Status == "results" {
+			waitingContests = append(waitingContests, contest)
+		}
 	}
 
 	c.HTML(http.StatusOK, "view_contests.html", gin.H{
 		"numberOfContests": len(contests),
 		"Contests":         contests,
+		"numberOfActiveContests":  len(activeContests),
+		"ActiveContests": 		activeContests,
+		"numberOfWaitingContests": len(waitingContests),
+		"WaitingContests": waitingContests,
+
 	})
 }
 

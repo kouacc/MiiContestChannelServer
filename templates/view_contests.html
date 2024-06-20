@@ -8,8 +8,23 @@
     <link href="/assets/output.css" rel="stylesheet">
 </head>
 <body>
-    <main class="container py-20">
-        <h1>There are {{.numberOfContests}} contests</h1>
+    <main class="container py-20 space-y-4">
+        <h1>Contests</h1>
+        <ul class="flex gap-5">
+            <li class="p-3 bg-blue-300 rounded-lg grow">
+                <span class="font-serif font-bold text-6xl">{{.numberOfContests}}</span>
+                <h3>Total Contests</h3>
+            </li>
+            <li class="p-3 bg-blue-300 rounded-lg grow">
+                <span class="font-serif font-bold text-6xl">{{.numberOfActiveContests}}</span>
+                <h3>Active Contests</h3>
+            </li>
+            <li class="p-3 bg-blue-300 rounded-lg grow">
+                <span class="font-serif font-bold text-6xl">{{.numberOfWaitingContests}}</span>
+                <h3>Ended Contests</h3>
+            </li>
+        </ul>
+        <h2>There are  contests in total,  currently running and  ended.</h2>
         <table class="w-full border table-fixed border-collapse">
             <thead>
             <tr>
