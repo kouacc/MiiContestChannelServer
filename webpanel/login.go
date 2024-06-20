@@ -55,7 +55,7 @@ func (w *WebPanel) Login(c *gin.Context) {
 	}
 
 	c.SetCookie("token", token, 3600, "", "", false, true)
-	c.Redirect(http.StatusMovedPermanently, "/panel/admin")
+	c.Redirect(http.StatusMovedPermanently, "/panel/contests")
 }
 
 func (w *WebPanel) AdminPage(c *gin.Context) {
