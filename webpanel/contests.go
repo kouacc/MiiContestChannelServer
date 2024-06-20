@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	GetContests = `SELECT contest_id, english_name, status FROM contests ORDER BY contest_id`
+	GetContests = `SELECT contest_id, english_name, status, has_souvenir, has_thumbnail, has_special_award, open_time, close_time FROM contests ORDER BY contest_id`
 	AddContest  = `INSERT INTO contests (has_special_award, has_thumbnail, has_souvenir, english_name, status, open_time, close_time) 
 					VALUES ($1, $2, $3, $4, 'waiting', $5, $6) RETURNING contest_id`
 )
@@ -21,6 +21,11 @@ type Contests struct {
 	ContestId int
 	Name      string
 	Status    string
+	HasSouvenir bool
+	HasThumbnail bool
+	HasSpecialAward bool
+	OpenTime  time.Time
+	CloseTime time.Time
 }
 
 func (w *WebPanel) ViewContests(c *gin.Context) {
@@ -37,7 +42,7 @@ func (w *WebPanel) ViewContests(c *gin.Context) {
 	var waitingContests []Contests
 	for rows.Next() {
 		contest := Contests{}
-		err = rows.Scan(&contest.ContestId, &contest.Name, &contest.Status)
+		err = rows.Scan(&contest.ContestId, &contest.Name, &contest.Status, &contest.HasSouvenir, &contest.HasThumbnail, &contest.HasSpecialAward, &contest.OpenTime, &contest.CloseTime)
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 				"Error": err.Error(),
