@@ -2,6 +2,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/WiiLink24/MiiContestChannel v0.0.0-20240617221257-ea56b0f3f864 h1:xujEwTsRZNufQyaQcK18DEjANhbGr/CrbNqnon6uyXk=
 github.com/WiiLink24/MiiContestChannel v0.0.0-20240617221257-ea56b0f3f864/go.mod h1:Vt5sw7Sx8oIA2RC3y78x0GRfUkQfMqKsOaU86eFtaCo=
+github.com/WiiLink24/MiiContestChannel v0.0.0-20240620135313-06d60e933ca0 h1:xq6Fnhj+IR4RJFVoviZ+Y301OwK1teK3w9Xtu3RirUg=
+github.com/WiiLink24/MiiContestChannel v0.0.0-20240620135313-06d60e933ca0/go.mod h1:Vt5sw7Sx8oIA2RC3y78x0GRfUkQfMqKsOaU86eFtaCo=
 github.com/WiiLink24/nwc24 v0.0.0-20230608020206-b86d9e90fb1d h1:3u6E2jrqbtXoPg53xHqmOeDb2CycQvPAap9dNT8u1+I=
 github.com/WiiLink24/nwc24 v0.0.0-20230608020206-b86d9e90fb1d/go.mod h1:FxcUTrS85gzEPurqt0K7Ihiy0WMIySFcxbE7mdCWk+0=
 github.com/bytedance/sonic v1.11.6 h1:oUp34TzMlL+OY1OUWxHqsdkgC/Zfc85zGqw9siXjrc0=
