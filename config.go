@@ -1,23 +1,16 @@
 package main
 
 import (
+	"MiiContestChannelServer/webpanel"
 	"encoding/xml"
-	"io/ioutil"
+	"os"
 )
 
-type Config struct {
-	Username        string `xml:"username"`
-	Password        string `xml:"password"`
-	DatabaseAddress string `xml:"databaseAddress"`
-	DatabaseName    string `xml:"databaseName"`
-	Address         string `xml:"address"`
-}
-
-func GetConfig() Config {
-	data, err := ioutil.ReadFile("config.xml")
+func GetConfig() webpanel.Config {
+	data, err := os.ReadFile("config.xml")
 	checkError(err)
 
-	var config Config
+	var config webpanel.Config
 	err = xml.Unmarshal(data, &config)
 	checkError(err)
 

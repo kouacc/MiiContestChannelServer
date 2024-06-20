@@ -659,6 +659,10 @@ h1 {
   margin-top: 1rem;
 }
 
+.mr-\[3px\] {
+  margin-right: 3px;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -691,6 +695,10 @@ h1 {
   height: 1.5rem;
 }
 
+.h-24 {
+  height: 6rem;
+}
+
 .w-11 {
   width: 2.75rem;
 }
@@ -705,6 +713,10 @@ h1 {
 
 .w-full {
   width: 100%;
+}
+
+.w-24 {
+  width: 6rem;
 }
 
 .grow {
@@ -783,6 +795,14 @@ h1 {
 
 .rounded-xl {
   border-radius: 0.75rem;
+}
+
+.rounded-\[12px_80px_80px_12px\] {
+  border-radius: 12px 80px 80px 12px;
+}
+
+.rounded-\[80px_12px_12px_80px\] {
+  border-radius: 80px 12px 12px 80px;
 }
 
 .border {
