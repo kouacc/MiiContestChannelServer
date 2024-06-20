@@ -8,29 +8,29 @@
     <link href="/assets/output.css" rel="stylesheet">
 </head>
 <body>
-    <main class="container">
+    <main class="container py-20">
         <h1>There are {{.numberOfContests}} contests</h1>
-        <table class="w-full">
+        <table class="w-full border table-fixed border-collapse">
             <thead>
             <tr>
-                <th scope="col">Contest ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Status</th>
+                <th class="border" scope="col">Contest ID</th>
+                <th class="border" scope="col">Name</th>
+                <th class="border" scope="col">Status</th>
             </tr>
             </thead>
             <tbody>
                 {{range .Contests}}
                     <tr class="odd:bg-white even:bg-slate-50">
-                        <td>{{ .ContestId }}</td>
-                        <td>{{ .Name }}</td>
-                        <td>{{ .Status }}</td>
+                        <td class="border">{{ .ContestId }}</td>
+                        <td class="border">{{ .Name }}</td>
+                        <td class="border">{{ .Status }}</td>
                     </tr>
                 {{end}}
             </tbody>
         </table>
         <br>
         <br>
-        <a href="/panel/contests/add"><button>Add Contest</button></a>
+        <a href="/panel/contests/add" class="submit_button"><button>Add Contest</button></a>
     </main>
 </body>
 </html>

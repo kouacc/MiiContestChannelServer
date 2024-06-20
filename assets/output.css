@@ -755,6 +755,14 @@ h1 {
   width: 2.75rem;
 }
 
+.table-fixed {
+  table-layout: fixed;
+}
+
+.border-collapse {
+  border-collapse: collapse;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -797,6 +805,10 @@ h1 {
 
 .border-4 {
   border-width: 4px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
 }
 
 .border-double {
@@ -914,6 +926,11 @@ h1 {
 .bg-gray-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity));
 }
 
 .p-2 {
