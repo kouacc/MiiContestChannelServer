@@ -22,24 +22,24 @@
     <br>
     <div class="flex justify-between">
         <h1>Contests</h1>
-        <a href="/panel/contests/add" class="submit_button hover:bg-sky-70" style="border-radius:9999px;">
+        <a href="/panel/contests/add" class="submit_button hover:bg-sky-70">
             <button><i class="fa-solid fa-circle-plus"></i> Add Contest</button>
         </a>
     </div>
       <ul class="flex gap-2">
-        <li class="text-white text-center p-3 bg-blue-300 grow" style="border-radius:18px 8px 8px 18px;">
+        <li class="text-white text-center p-3 bg-blue-300 grow rounded-[18px_8px_8px_18px]">
           <span class="font-serif font-bold text-6xl"
             >{{.numberOfContests}}</span
           >
           <h3>Total Contests</h3>
         </li>
-        <li class="text-white text-center p-3 bg-green-400 grow" style="border-radius:8px;">
+        <li class="text-white text-center p-3 bg-green-400 grow rounded-lg">
           <span class="font-serif font-bold text-6xl"
             >{{.numberOfActiveContests}}</span
           >
           <h3>Active Contests</h3>
         </li>
-        <li class="text-white text-center p-3 bg-red-400 grow" style="border-radius:8px 18px 18px 8px;">
+        <li class="text-white text-center p-3 bg-red-400 grow rounded-[8px_18px_18px_8px]">
           <span class="font-serif font-bold text-6xl"
             >{{.numberOfWaitingContests}}</span
           >
@@ -74,11 +74,11 @@
                 <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-blue-100 items-center justify-between gap-8 overflow-hidden">
                     <div class="flex flex-row flex-wrap items-center gap-3">
                         {{ if .HasThumbnail}}
-                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg" style="z-index:1; position:relative;">
-                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55" style="filter:blur(18px); z-index:0; position:absolute;">
+                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg z-10 relative">
+                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55 blur-lg z-0 absolute">
                     {{end}}
                     <div class="flex flex-col">
-                    <h1 class="font-bold flex flex-row gap-2" style="font-size:22px; padding-bottom:8px;">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
+                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
                     <div class="flex items-center flex-row gap-3">
                         {{ if .HasSpecialAward}}
                         <i class="fa-solid fa-wand-sparkles text-2xl"></i>
@@ -115,11 +115,11 @@
                 <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-green-100 items-center justify-between gap-8">
                     <div class="flex flex-row flex-wrap items-center gap-3">
                         {{ if .HasThumbnail}}
-                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg" style="z-index:1; position:relative;">
-                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55" style="filter:blur(18px); z-index:0; position:absolute;">
+                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg z-10 relative">
+                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55 blur-lg z-0 absolute">
                     {{end}}
                     <div class="flex flex-col">
-                    <h1 class="font-bold flex flex-row gap-2" style="font-size:22px; padding-bottom:8px;">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
+                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
                     <div class="flex items-center flex-row gap-3">
                         {{ if .HasSpecialAward}}
                         <i class="fa-solid fa-wand-sparkles text-2xl"></i>
@@ -156,11 +156,11 @@
                 <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-red-100 items-center justify-between gap-8">
                     <div class="flex flex-row flex-wrap items-center gap-3">
                         {{ if .HasThumbnail}}
-                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg" style="z-index:1; position:relative;">
-                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55" style="filter:blur(18px); z-index:0; position:absolute;">
+                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg z-10 relative">
+                    <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55 blur-lg z-0 absolute">
                     {{end}}
                     <div class="flex flex-col">
-                    <h1 class="font-bold flex flex-row gap-2" style="font-size:22px; padding-bottom:8px;">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
+                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
                     <div class="flex items-center flex-row gap-3">
                         {{ if .HasSpecialAward}}
                         <i class="fa-solid fa-wand-sparkles text-2xl"></i>
