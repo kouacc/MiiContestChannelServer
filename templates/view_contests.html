@@ -62,8 +62,42 @@
             {{end}}
         </tbody>
     </table>
-      <br />
-      <br />
+    <table class="mt-4 w-full border rounded-sm table-fixed border-collapse">
+        <thead>
+            <tr>
+                <th class="border" scope="col">Contest ID</th>
+                <th class="border" scope="col">Name</th>
+                <th class="border" scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .ActiveContests}}
+            <tr class="odd:bg-white even:bg-slate-50">
+                <td class="border">{{ .ContestId }}</td>
+                <td class="border">{{ .Name }}</td>
+                <td class="border">{{ .Status }}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    <table class="mt-4 w-full border rounded-sm table-fixed border-collapse">
+        <thead>
+            <tr>
+                <th class="border" scope="col">Contest ID</th>
+                <th class="border" scope="col">Name</th>
+                <th class="border" scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .WaitingContests}}
+            <tr class="odd:bg-white even:bg-slate-50">
+                <td class="border">{{ .ContestId }}</td>
+                <td class="border">{{ .Name }}</td>
+                <td class="border">{{ .Status }}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
     </main>
   </body>
 </html>

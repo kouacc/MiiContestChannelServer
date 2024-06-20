@@ -6,14 +6,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link href="/assets/output.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e47ece3e74.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <main class="container main_grid py-20">
-        <a class="col-span-2" href="/panel/contests">Return to Contests</a>
+        <a class="col-span-2 inline-flex gap-3 items-center" href="/panel/contests"><i class="fa-solid fa-chevron-left"></i>Return to Contests</a>
         <h1 class="col-start-1 col-span-full">Add Contest</h1>
-        <!-- {{if .Error}}
+        {{if .Error}}
         <p style="color:red;">{{.Error}}</p>
-        {{end}} -->
+        {{end}}
         <form action="/panel/contests/add" method="post" enctype="multipart/form-data" class="col-start-1 col-span-full main_grid">
             <div class="input col-start-1 col-span-3">
                 <label>Contest Name</label>
