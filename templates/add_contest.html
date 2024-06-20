@@ -33,7 +33,8 @@
         <a
           class="col-span-2 inline-flex gap-3 items-center"
           href="/panel/contests"
-          ><i class="fa-solid fa-chevron-left"></i><p class="hover:underline">Return to Contests</p></a
+          ><i class="fa-solid fa-chevron-left"></i>
+          <p class="hover:underline">Return to Contests</p></a
         >
         <p class="opacity-50">
           CMOC <i class="fa-solid fa-caret-right"></i> Contests
@@ -48,7 +49,7 @@
         class="w-100 h-50 p-20 rounded-3xl bg-[url('https://rc24.xyz/goodies/wallpapers/CMO_Channel_BG_orange_1600x900.png')] shadow-[0px 0px 60px #d3d68c60]"
       >
         <div
-          class="p-2 rounded-3xl border-[5px] border-white bg-[rgb(76,130,163)]"
+          class="p-2 rounded-3xl border-[5px] border-white bg-[rgb(76,130,163)] shadow-2xl z-10 relative"
         >
           <p class="ml-1 text-white text-lg">
             <span id="randomInt"></span> days remaining
@@ -66,19 +67,27 @@
             ></h2>
           </div>
         </div>
+        <img
+          id="souvenirPreview2"
+          class="w-80 hidden rounded-3xl shadow-2xl z-0 absolute"
+          style="
+            right: 0 !important;
+            transform: translate(-100%, -70%) rotate(3deg);
+          "
+        />
       </div>
-      <br>
-      <br>
-      <div>
-        
-      </div>
+      <br />
+      <br />
+      <div></div>
       <form
         action="/panel/contests/add"
         method="post"
         enctype="multipart/form-data"
         class="col-start-1 col-span-full main_grid rounded-xl"
       >
-        <div class="input col-start-1 col-span-8 p-2 border rounded-xl bg-neutral-100">
+        <div
+          class="input col-start-1 col-span-8 p-2 border rounded-xl bg-neutral-100"
+        >
           <label>Contest Name</label>
           <input
             type="text"
@@ -89,8 +98,10 @@
             oninput="updateContestName(event)"
           />
         </div>
-        <div class="input col-start-9 col-span-4 p-2 border rounded-xl bg-neutral-100">
-          <label>Open Time</label>
+        <div
+          class="input col-start-9 col-span-4 p-2 border rounded-xl bg-neutral-100"
+        >
+          <label class="flex items-center justify-between">Open Time <i class="fa-regular fa-circle-question opacity-60 cursor-pointer" title="Polls will automatically close after a week of being created. They will be judged after a month."></i></label>
           <input
             type="date"
             name="open_time"
@@ -98,58 +109,80 @@
             class="rounded-xl px-5 py-2 border border-slate-200"
           />
         </div>
-        <div class="input col-start-1 col-span-3 p-2 border rounded-xl bg-neutral-100">
+        <div
+          class="input col-start-1 col-span-3 p-2 border rounded-xl bg-neutral-100"
+        >
           <span>Has Special Award?</span>
           <label class="inline-flex items-center cursor-pointer">
             <input type="checkbox" name="special_award" class="sr-only peer" />
             <div
-              class="text-black relative w-full p-4 bg-gray-50 border rounded-xl peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white before:content-['No'] peer-checked:after:content-['Yes'] peer-checked:before:content-[''] after:content-[''] after:bg-white after:border after:rounded-full after:transition-all peer-checked:bg-gray-200"
+              class="text-black relative w-full p-4 bg-gray-50 border rounded-xl hover:scale-105 hover:-rotate-1 transition-all peer peer-checked:-rotate-1 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white before:content-['No'] peer-checked:after:content-['Yes'] peer-checked:before:content-[''] after:content-[''] after:text-white after:bg-blue-500 after:border-0 after:rounded-full after:transition-all peer-checked:bg-blue-500"
             ></div>
           </label>
         </div>
-        <div class="input col-start-4 col-span-3 p-2 border rounded-xl bg-neutral-100">
+        <div
+          class="input col-start-4 col-span-3 p-2 border rounded-xl bg-neutral-100"
+        >
           <span>Thumbnail</span>
           <label
-            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 flex items-center gap-3"
-          ><i class="fa-solid fa-circle-plus"></i>Add file
+            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 flex items-center justify-between gap-3"
+            ><i class="fa-solid fa-circle-plus"></i>Add file
             <input
               type="file"
               name="thumbnail"
               type="image/png"
               class="hidden"
-              onchange="previewImage(event, 'thumbnailPreview')"
+              onchange="previewImage(event, 'thumbnailPreview', 'thumbnailPreview2')"
+            />
+            <img
+              id="thumbnailPreview2"
+              class="w-5 scale-150 hidden rounded-md shadow-md rotate-3"
             />
           </label>
         </div>
-        <div class="input col-start-7 col-span-6 p-2 border rounded-xl bg-neutral-100">
+        <div
+          class="input col-start-7 col-span-6 p-2 border rounded-xl bg-neutral-100"
+        >
           <span>Souvenir</span>
           <label
-            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 flex items-center gap-3"
-          ><i class="fa-solid fa-circle-plus"></i>Add file
+            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 flex items-center justify-between gap-3"
+            ><i class="fa-solid fa-circle-plus"></i>Add file
             <input
               type="file"
               name="souvenir"
               type="image/png"
               class="hidden"
-              onchange="previewImage(event, 'souvenirPreview')"
+              onchange="previewImage(event, 'souvenirPreview', 'souvenirPreview2')"
+            />
+            <img
+              id="souvenirPreview"
+              class="w-5 scale-150 hidden rounded-md shadow-md rotate-3"
             />
           </label>
         </div>
         <input
           type="submit"
           value="Submit"
-          class="submit_button col-end-13 place-self-end"
+          class="font-bold submit_button col-end-13 place-self-end"
         />
       </form>
+      <br>
+      <hr>
+      <br />
+      <p>©2020 - 2024 WiiLink Team</p>
     </main>
   </body>
 
   <script>
-    function previewImage(event, id) {
+    function previewImage(event, id, id2) {
       const reader = new FileReader();
       reader.onload = function () {
         const output = document.getElementById(id);
+        const output2 = document.getElementById(id2);
         output.src = reader.result;
+        output2.src = reader.result;
+        output.classList.remove("hidden");
+        output2.classList.remove("hidden");
       };
       reader.readAsDataURL(event.target.files[0]);
     }
