@@ -13,91 +13,181 @@
   </head>
   <body>
     <main class="container py-20 space-y-4">
+        <div class="flex items-center justify-between">
+        <img src="https://cdn.discordapp.com/attachments/1090989036358864917/1253113607127044198/image.png?ex=6675553d&is=667403bd&hm=8d8fad714ff5f1d8bf962ea03765f8fa75a216682a48a99b83d7852c464747bc&" style="height:60px !important;">
+        <h2 class="text-right text-lg"><b>CMOC</b><br> Control Panel</h2>
+    </div>
+    <br>
+    <hr>
+    <br>
     <div class="flex justify-between">
         <h1>Contests</h1>
         <a href="/panel/contests/add" class="submit_button hover:bg-sky-70" style="border-radius:9999px;">
             <button><i class="fa-solid fa-circle-plus"></i> Add Contest</button>
         </a>
     </div>
-      <ul class="flex gap-5">
-        <li class="text-center p-3 bg-green-300 rounded-lg grow">
+      <ul class="flex gap-2">
+        <li class="text-center p-3 bg-green-300 grow" style="border-radius:18px 8px 8px 18px;">
           <span class="font-serif font-bold text-6xl"
             >{{.numberOfContests}}</span
           >
           <h3>Total Contests</h3>
         </li>
-        <li class="text-center p-3 bg-blue-300 rounded-lg grow">
+        <li class="text-center p-3 bg-blue-300 grow" style="border-radius:8px;">
           <span class="font-serif font-bold text-6xl"
             >{{.numberOfActiveContests}}</span
           >
           <h3>Active Contests</h3>
         </li>
-        <li class="text-center p-3 bg-red-300 rounded-lg grow">
+        <li class="text-center p-3 bg-red-300 grow" style="border-radius:8px 18px 18px 8px;">
           <span class="font-serif font-bold text-6xl"
             >{{.numberOfWaitingContests}}</span
           >
           <h3>Ended Contests</h3>
         </li>
       </ul>
+      <div class="flex items-center justify-between">
       <h2 class="opacity-30">
         There are {{.numberOfContests}} contests in total,
         {{.numberOfActiveContests}} currently running and
         {{.numberOfWaitingContests}} ended.
       </h2>
-    <table class="mt-4 w-full border rounded-sm table-fixed border-collapse">
-        <thead>
-            <tr>
-                <th class="border" scope="col">Contest ID</th>
-                <th class="border" scope="col">Name</th>
-                <th class="border" scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{range .Contests}}
-            <tr class="odd:bg-white even:bg-slate-50">
-                <td class="border">{{ .ContestId }}</td>
-                <td class="border">{{ .Name }}</td>
-                <td class="border">{{ .Status }}</td>
-            </tr>
-            {{end}}
-        </tbody>
-    </table>
-    <table class="mt-4 w-full border rounded-sm table-fixed border-collapse">
-        <thead>
-            <tr>
-                <th class="border" scope="col">Contest ID</th>
-                <th class="border" scope="col">Name</th>
-                <th class="border" scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{range .ActiveContests}}
-            <tr class="odd:bg-white even:bg-slate-50">
-                <td class="border">{{ .ContestId }}</td>
-                <td class="border">{{ .Name }}</td>
-                <td class="border">{{ .Status }}</td>
-            </tr>
-            {{end}}
-        </tbody>
-    </table>
-    <table class="mt-4 w-full border rounded-sm table-fixed border-collapse">
-        <thead>
-            <tr>
-                <th class="border" scope="col">Contest ID</th>
-                <th class="border" scope="col">Name</th>
-                <th class="border" scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{range .WaitingContests}}
-            <tr class="odd:bg-white even:bg-slate-50">
-                <td class="border">{{ .ContestId }}</td>
-                <td class="border">{{ .Name }}</td>
-                <td class="border">{{ .Status }}</td>
-            </tr>
-            {{end}}
-        </tbody>
-    </table>
+<div class="">
+    <ul class="flex rounded-xl p-1 bg-gray-50 border-2 border-gray-100 flex-wrap text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-3 rounded-lg bg-gray-200 shadow-sm hover:bg-gray-200 hover:shadow-sm" id="total-tab" data-tabs-target="#total" type="button" role="tab" aria-controls="profile" aria-selected="false">Total</button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-3 rounded-lg hover:bg-gray-200 hover:shadow-sm" id="active-tab" data-tabs-target="#active" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Active</button>
+        </li>
+        <li class="" role="presentation">
+            <button class="inline-block p-3 rounded-lg hover:bg-gray-200 hover:shadow-sm" id="ended-tab" data-tabs-target="#ended" type="button" role="tab" aria-controls="ended" aria-selected="false">Ended</button>
+        </li>
+    </ul>
+</div>
+</div>
+<div id="default-tab-content">
+    <div class="p-4 rounded-lg bg-green-100" id="total" role="tabpanel" aria-labelledby="total-tab">
+        <div class="mt-4 flex flex-col rounded-sm">
+            <div class="flex flex-col">
+                {{range .Contests}}
+                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-green-100 justify-between">
+                    <div class="flex flex-row flex-wrap items-center gap-3">
+                    <img src="" class="w-20 h-20 rounded-lg">
+                    <div class="flex flex-col">
+                    <div class="p-2 font-bold">{{ .Name }}</div>
+                    <div class="flex flex-row">
+                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 text-white bg-slate-700 hover:bg-sky-70" style="border-radius:80px 12px 12px 80px; margin-right:3px;">
+                        <button><i class="fa-solid fa-pen-to-square"></i> Edit Contest</button>
+                    </a>
+                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 text-white bg-amber-600 hover:bg-sky-70" style="border-radius:12px 80px 80px 12px;">
+                        <button><i class="fa-solid fa-trash"></i> Delete Contest</button>
+                    </a>
+                </div>
+                    </div>
+                </div class="flex flex-row flex-wrap">
+                    <div>
+                    <div class="p-2 text-right">{{ .Status }}</div>
+                    <div class="p-2 text-right opacity-45"><i class="fa-solid fa-fingerprint"></i> {{ .ContestId }}</div>
+                </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+    <div class="hidden p-4 rounded-lg bg-blue-100" id="active" role="tabpanel" aria-labelledby="active-tab">
+        <div class="mt-4 flex flex-col rounded-sm">
+            <div class="flex flex-col">
+                {{range .ActiveContests}}
+                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-blue-100 justify-between">
+                    <div class="flex flex-row flex-wrap items-center gap-3">
+                    <img src="" class="w-20 h-20 rounded-lg">
+                    <div class="flex flex-col">
+                    <div class="p-2 font-bold">{{ .Name }}</div>
+                    <div class="flex flex-row">
+                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 text-white bg-slate-700 hover:bg-sky-70" style="border-radius:80px 12px 12px 80px; margin-right:3px;">
+                        <button><i class="fa-solid fa-pen-to-square"></i> Edit Contest</button>
+                    </a>
+                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 text-white bg-amber-600 hover:bg-sky-70" style="border-radius:12px 80px 80px 12px;">
+                        <button><i class="fa-solid fa-trash"></i> Delete Contest</button>
+                    </a>
+                </div>
+                    </div>
+                </div class="flex flex-row flex-wrap">
+                    <div>
+                    <div class="p-2 text-right">{{ .Status }}</div>
+                    <div class="p-2 text-right opacity-45"><i class="fa-solid fa-fingerprint"></i> {{ .ContestId }}</div>
+                </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+    <div class="hidden p-4 rounded-lg bg-red-100" id="ended" role="tabpanel" aria-labelledby="ended-tab">
+        <div class="mt-4 flex flex-col rounded-sm">
+            <div class="flex flex-col">
+                {{range .WaitingContests}}
+                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-red-100 justify-between">
+                    <div class="flex flex-row flex-wrap items-center gap-3">
+                    <img src="" class="w-20 h-20 rounded-lg">
+                    <div class="flex flex-col">
+                    <div class="p-2 font-bold">{{ .Name }}</div>
+                    <div class="flex flex-row">
+                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 text-white bg-slate-700 hover:bg-sky-70" style="border-radius:80px 12px 12px 80px; margin-right:3px;">
+                        <button><i class="fa-solid fa-pen-to-square"></i> Edit Contest</button>
+                    </a>
+                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 text-white bg-amber-600 hover:bg-sky-70" style="border-radius:12px 80px 80px 12px;">
+                        <button><i class="fa-solid fa-trash"></i> Delete Contest</button>
+                    </a>
+                </div>
+                    </div>
+                </div class="flex flex-row flex-wrap">
+                    <div>
+                    <div class="p-2 text-right">{{ .Status }}</div>
+                    <div class="p-2 text-right opacity-45"><i class="fa-solid fa-fingerprint"></i> {{ .ContestId }}</div>
+                </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</div>
     </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('[data-tabs-target]');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = document.querySelector(tab.dataset.tabsTarget);
+                if (!target) {
+                    console.error('Target not found for:', tab.dataset.tabsTarget);
+                    return; // Prevent further execution if target is not found
+                }
+                const tabContainers = document.querySelectorAll('[id^="default-tab-content"] > div');
+                const tabButtons = document.querySelectorAll('[id^="default-tab"] button');
+
+                // Hide all tab panels
+                tabContainers.forEach(container => {
+                    container.classList.add('hidden');
+                });
+
+                // Remove bg-gray-200 and shadow-md from all tabs and mark them as unselected
+                tabButtons.forEach(button => {
+                    button.classList.remove('bg-gray-200', 'shadow-sm');
+                    button.setAttribute('aria-selected', 'false');
+                });
+
+                // Show the selected tab panel
+                target.classList.remove('hidden');
+
+                // Mark the clicked tab as selected and add bg-gray-200 and shadow-md
+                tab.classList.add('bg-gray-200', 'shadow-sm');
+                tab.setAttribute('aria-selected', 'true');
+            });
+        });
+    });
+    </script>
   </body>
 </html>
