@@ -45,15 +45,10 @@
       <p style="color: red">{{.Error}}</p>
       {{end}}
       <div
-        class="w-100 h-50 p-20 rounded-3xl"
-        style="
-          background: url('https://rc24.xyz/goodies/wallpapers/CMO_Channel_BG_orange_1600x900.png');
-          box-shadow: 0px 0px 60px #d3d68c60;
-        "
+        class="w-100 h-50 p-20 rounded-3xl bg-[url('https://rc24.xyz/goodies/wallpapers/CMO_Channel_BG_orange_1600x900.png')] shadow-[0px 0px 60px #d3d68c60]"
       >
         <div
-          class="p-2 bg-gray-100 border-2 border-gray-500 rounded-3xl"
-          style="background-color: rgb(76, 130, 163); border: 5px solid white"
+          class="p-2 rounded-3xl border-[5px] border-white bg-[rgb(76,130,163)]"
         >
           <p class="ml-1 text-white text-lg">
             <span id="randomInt"></span> days remaining
@@ -74,38 +69,49 @@
       </div>
       <br>
       <br>
+      <div>
+        
+      </div>
       <form
         action="/panel/contests/add"
         method="post"
         enctype="multipart/form-data"
-        class="col-start-1 col-span-full main_grid"
+        class="col-start-1 col-span-full main_grid rounded-xl"
       >
-        <div class="input col-start-1 col-span-3">
+        <div class="input col-start-1 col-span-8 p-2 border rounded-xl bg-neutral-100">
           <label>Contest Name</label>
           <input
             type="text"
             name="name"
             required
             placeholder="Contest Name"
-            class="border rounded-lg bg-gray-100 p-2"
+            class="border rounded-lg p-2"
             oninput="updateContestName(event)"
           />
         </div>
-        <div class="input col-start-1 col-span-2">
+        <div class="input col-start-9 col-span-4 p-2 border rounded-xl bg-neutral-100">
+          <label>Open Time</label>
+          <input
+            type="date"
+            name="open_time"
+            required
+            class="rounded-xl px-5 py-2 border border-slate-200"
+          />
+        </div>
+        <div class="input col-start-1 col-span-3 p-2 border rounded-xl bg-neutral-100">
           <span>Has Special Award?</span>
           <label class="inline-flex items-center cursor-pointer">
             <input type="checkbox" name="special_award" class="sr-only peer" />
             <div
-              class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-400"
+              class="text-black relative w-full p-4 bg-gray-50 border rounded-xl peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white before:content-['No'] peer-checked:after:content-['Yes'] peer-checked:before:content-[''] after:content-[''] after:bg-white after:border after:rounded-full after:transition-all peer-checked:bg-gray-200"
             ></div>
           </label>
         </div>
-        <div class="input col-start-1 col-span-2">
+        <div class="input col-start-4 col-span-3 p-2 border rounded-xl bg-neutral-100">
           <span>Thumbnail</span>
-          <!--TODO: add a image placeholder and fix img sizing-->
           <label
-            class="bg-blue-200 cursor-pointer p-4 rounded-lg transition-all hover:bg-blue-300"
-          >
+            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 flex items-center gap-3"
+          ><i class="fa-solid fa-circle-plus"></i>Add file
             <input
               type="file"
               name="thumbnail"
@@ -115,12 +121,11 @@
             />
           </label>
         </div>
-        <div class="input col-start-3 col-span-2">
+        <div class="input col-start-7 col-span-6 p-2 border rounded-xl bg-neutral-100">
           <span>Souvenir</span>
-          <!--TODO: add a image placeholder and fix img sizing-->
           <label
-            class="bg-blue-200 cursor-pointer p-4 rounded-lg transition-all hover:bg-blue-300"
-          >
+            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 flex items-center gap-3"
+          ><i class="fa-solid fa-circle-plus"></i>Add file
             <input
               type="file"
               name="souvenir"
@@ -128,27 +133,12 @@
               class="hidden"
               onchange="previewImage(event, 'souvenirPreview')"
             />
-            <img
-              id="souvenirPreview"
-              src="#"
-              alt="Souvenir Preview"
-              class="w-32 h-32"
-            />
           </label>
-        </div>
-        <div class="input col-start-5 col-span-2">
-          <label>Open Time</label>
-          <input
-            type="date"
-            name="open_time"
-            required
-            class="rounded-full px-5 py-2 bg-blue-200"
-          />
         </div>
         <input
           type="submit"
           value="Submit"
-          class="submit_button col-end-13 place-self-start"
+          class="submit_button col-end-13 place-self-end"
         />
       </form>
     </main>
