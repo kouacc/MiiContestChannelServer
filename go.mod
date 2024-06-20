@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	github.com/WiiLink24/MiiContestChannel v0.0.0-20240617221257-ea56b0f3f864 // indirect
+	github.com/WiiLink24/MiiContestChannel v0.0.0-20240620135313-06d60e933ca0 // indirect
 	github.com/bytedance/sonic v1.11.6 // indirect
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
