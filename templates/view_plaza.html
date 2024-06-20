@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plaza | CMOC Control Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="/assets/output.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/e47ece3e74.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <main class="container py-20 space-y-4">
+        <div class="flex items-center justify-between">
+        <img src="https://cdn.discordapp.com/attachments/1090989036358864917/1253113607127044198/image.png?ex=6675553d&is=667403bd&hm=8d8fad714ff5f1d8bf962ea03765f8fa75a216682a48a99b83d7852c464747bc&" style="height:60px !important;">
+        <h2 class="text-right text-lg"><b>CMOC</b><br> Control Panel</h2>
+    </div>
+    <br>
+    <hr>
+    <br>
+        {{if .Error}}
+        <p style="color:red;">{{.Error}}</p>
+        {{end}}
+        <h1>Plaza</h1>
+        <h2>There are {{ .numberOfMiis }} Miis in the Plaza.</h2>
+        {{ range .Plaza }}
+        <div class="flex gap-3 border">
+            <h2>{{.EntryId}}</h2>
+            <p>{{.ArtisanId}}</p>
+            <p>{{.Initials}}</p>
+            <p>{{.Nickname}}</p>
+            <p>{{.Gender}}</p>
+            <p>{{.CountryId}}</p>
+            <p>{{.WiiNumber}}</p>
+            <p>{{.MiiId}}</p>
+            <p>{{.Likes}}</p>
+            <p>{{.PermLikes}}</p>
+            <p>{{.MiiData}}</p>
+        </div>
+        {{end}}
+        <button onclick="deleteEntry(5)">Delete Entry</button>
+    </main>
+</body>
+
+<script>
+    function deleteEntry(entryId) {
+        fetch(`/panel/plaza/delete/${entryId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Failed to delete entry.');
+            }
+        });
+    }
+</script>
+</html>

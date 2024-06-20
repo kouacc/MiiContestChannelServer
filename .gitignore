@@ -2,3 +2,4 @@ config.xml
 salt.bin
 thumbnail.ces
 /assets/contest
+.DS_Store

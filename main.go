@@ -61,6 +61,8 @@ func main() {
 		auth.GET("/contests", panel.ViewContests)
 		auth.GET("/contests/add", panel.AddContest)
 		auth.POST("/contests/add", panel.AddContestPOST)
+		auth.GET("/plaza", panel.ViewPlaza)
+		auth.POST("/plaza/delete/:entry_id", panel.DeleteMii)
 	}
 
 	r.POST("/cgi-bin/conpost.cgi", conPost)
