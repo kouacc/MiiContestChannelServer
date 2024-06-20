@@ -45,9 +45,10 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	panel := webpanel.WebPanel{
-		Pool: pool,
-		Ctx:  ctx,
-		Salt: salt,
+		Pool:   pool,
+		Ctx:    ctx,
+		Salt:   salt,
+		Config: config,
 	}
 
 	r.GET("/panel/login", panel.LoginPage)

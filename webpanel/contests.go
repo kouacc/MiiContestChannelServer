@@ -2,10 +2,12 @@ package webpanel
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/WiiLink24/MiiContestChannel/contest"
 	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -125,7 +127,25 @@ func (w *WebPanel) AddContestPOST(c *gin.Context) {
 			return
 		}
 
-		err = contest.MakeThumbnail(buffer.Bytes(), "thumbnail.ces", contestId)
+		resized, err := resize(buffer, 96, 96)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		// Create encrypted thumbnail
+		err = contest.MakeThumbnail(resized, contestId)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		// Write unencrypted thumbnail
+		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/thumbnail.jpg", w.Config.AssetsPath, contestId), resized, 0666)
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
 				"Error": err.Error(),
