@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Add Contest</title>
-    <link rel="stylesheet" href="output.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
@@ -25,18 +24,33 @@
             </div>
             <div class="input col-start-1 col-span-full">
                 <label>Thumbnail</label>
-            <input type="file" name="thumbnail" class="file:bg-blue-200 file:border-0 file:rounded-full file:px-5 file:py-2">
+                <input type="file" name="thumbnail" type="image/png" class="file:bg-blue-200 file:border-0 file:rounded-full file:px-5 file:py-2" onchange="previewImage(event, 'thumbnailPreview')">
+                <p>Required size: 128x128px</p>
+                <p>Thumbnail Preview</p>
+                <img id="thumbnailPreview" src="#" alt="Thumbnail Preview" class="w-32 h-auto">
             </div>
             <div class="input col-start-1 col-span-full">
                 <label>Souvenir</label>
-                <input type="file" name="souvenir" class="file:bg-blue-200 file:border-0 file:rounded-full file:px-5 file:py-2">
+                <input type="file" name="souvenir" type="image/png" class="file:bg-blue-200 file:border-0 file:rounded-full file:px-5 file:py-2" onchange="previewImage(event, 'souvenirPreview')">
+                <img id="souvenirPreview" src="#" alt="Souvenir Preview" class="w-32 h-auto">
             </div>
-            <div class="input col-start-1 col-span-full">
+            <div class="input col-start-1 col-span-2">
                 <label>Open Time</label>
-                <input type="date" name="open_time" required>
+                <input type="date" name="open_time" required class="rounded-full px-5 py-2 bg-blue-200">
             </div>
             <input type="submit" value="Submit" class="submit_button col-end-13 place-self-start">
         </form>
     </main>
 </body>
+
+<script>
+function previewImage(event, id) {
+    const reader = new FileReader();
+    reader.onload = function(){
+        const output = document.getElementById(id);
+        output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>
 </html>

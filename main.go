@@ -39,7 +39,9 @@ func main() {
 
 	// Set up HTTP
 	r := gin.Default()
-	r.Static("/assets", "./assets") // Serve static files
+	if gin.Mode() == gin.DebugMode {
+		r.Static("/assets", "./assets") // Serve static files
+	}
 	r.LoadHTMLGlob("templates/*")
 
 	panel := webpanel.WebPanel{
