@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Contests</title>
+    <title>Contests | CMOC Control Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -71,7 +71,7 @@
         <div class="mt-4 flex flex-col rounded-sm">
             <div class="flex flex-col">
                 {{range .Contests}}
-                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-blue-100 items-center justify-between gap-8">
+                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-blue-100 items-center justify-between gap-8 overflow-hidden">
                     <div class="flex flex-row flex-wrap items-center gap-3">
                         {{ if .HasThumbnail}}
                     <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg" style="z-index:1; position:relative;">
@@ -193,6 +193,8 @@
     <p class="pt-3 opacity-30 text-right">
     The <i class="fa-solid fa-wand-sparkles"></i> and <i class="fa-solid fa-gift"></i> icon mean the contest has a Special Award and Souvenir, respectively.
 </p>
+<br>
+<p>©2020 - 2024 WiiLink Team</p>
 </div>
     </main>
 
