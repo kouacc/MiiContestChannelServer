@@ -175,6 +175,7 @@
           <input
             type="text"
             name="name"
+            id="contestInputName"
             required
             value="{{ .ContestInfo.Name }}"
             placeholder="Contest Name"
@@ -301,6 +302,8 @@
           element.style.display = "none";
         }
       });
+
+      document.getElementById("contestName").innerHTML = document.getElementById("contestInputName").value;
 
       document.getElementById("randomInt").innerHTML = Math.floor(
         Math.random() * (10 - 2 + 1) + 2
