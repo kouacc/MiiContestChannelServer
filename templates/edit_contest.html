@@ -212,8 +212,8 @@
             <input
               type="checkbox"
               name="special_award"
-              value="{{.ContestInfo.HasSpecialAward}}"
               class="sr-only peer"
+              {{if .ContestInfo.HasSpecialAward}}checked{{end}}
             />
             <div
               class="text-black relative w-full p-4 bg-gray-50 border rounded-xl hover:scale-105 hover:-rotate-1 transition-all peer peer-checked:-rotate-1 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white before:content-['No'] peer-checked:after:content-['Yes'] peer-checked:before:content-[''] after:content-[''] after:text-white after:bg-blue-500 after:border-0 after:rounded-full after:transition-all peer-checked:bg-blue-500"

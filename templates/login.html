@@ -38,14 +38,12 @@
     ></script>
   </head>
   <body
-    class="bg-white dark:bg-slate-800 dark:text-white flex items-center justify-center absolute"
-    style="width: 100%; height: 100%"
+    class="bg-white dark:bg-slate-800 dark:text-white flex items-center justify-center absolute w-full h-full"
   >
     <main
-      class="flex flex-col items-center justify-center gap-3 relative"
-      style="width: 95%; max-width: 500px"
+      class="flex flex-col items-center justify-center gap-3 relative w-[95%] max-w-lg"
     >
-      <div class="flex items-center justify-between" style="width: 100%">
+      <div class="flex items-center justify-between w-full">
         <img
           src="https://www.wiilink24.com/img/IS-logo.png"
           class="dark:invert"
@@ -67,16 +65,14 @@
       <form
         action="/panel/login"
         method="post"
-        class="mt-2 pt-6 flex flex-col gap-2"
-        style="width: 100%; border-top: 2px solid rgba(255, 255, 255, 0.08)"
+        class="mt-2 pt-6 flex flex-col gap-2 w-full border-t-2 border-black/10"
       >
         <div class="input">
           <input
             type="text"
             name="username"
             placeholder="Username"
-            class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-4 rounded-lg"
-            style="border-radius: 16px 16px 8px 8px"
+            class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-4 rounded-t-2xl rounded-b-lg"
           />
         </div>
         <div class="input">
@@ -84,8 +80,7 @@
             type="password"
             name="password"
             placeholder="Password"
-            class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-4 rounded-lg"
-            style="border-radius: 8px 8px 16px 16px"
+            class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-4 rounded-b-2xl rounded-t-lg"
           />
         </div>
         <p class="opacity-50 text-right mt-3">
@@ -96,8 +91,8 @@
         <input
           type="submit"
           value="Login"
-          class="submit_button"
-          style="padding: 18px"
+          class="submit_button p-[18px]"
+
         />
       </form>
     </main>
