@@ -89,12 +89,8 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
-                        <button><i class="fa-solid fa-pen-to-square"></i></button>
-                    </a>
-                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70">
-                        <button><i class="fa-solid fa-trash"></i></button>
-                    </a>
+                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
                 </div>
                     </div>
                 </div class="flex flex-row flex-wrap">
@@ -130,12 +126,8 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
-                        <button><i class="fa-solid fa-pen-to-square"></i></button>
-                    </a>
-                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70">
-                        <button><i class="fa-solid fa-trash"></i></button>
-                    </a>
+                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
                 </div>
                     </div>
                 </div class="flex flex-row flex-wrap">
@@ -171,12 +163,8 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
-                        <button><i class="fa-solid fa-pen-to-square"></i></button>
-                    </a>
-                    <a href="/panel/contests/add" class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70">
-                        <button><i class="fa-solid fa-trash"></i></button>
-                    </a>
+                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
                 </div>
                     </div>
                 </div class="flex flex-row flex-wrap">
@@ -250,6 +238,21 @@
     Array.from(closeTimeElements).forEach(element => {
         element.textContent = formatDate(element.textContent);
     });
+
+    function deleteEntry(ContestId) {
+        fetch(`/panel/contests/delete/${ContestId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Failed to delete entry.');
+            }
+        });
+    }
     </script>
   </body>
 </html>

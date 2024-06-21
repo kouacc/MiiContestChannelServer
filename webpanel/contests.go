@@ -16,6 +16,7 @@ const (
 	AddContest  = `INSERT INTO contests (has_special_award, has_thumbnail, has_souvenir, english_name, status, open_time, close_time) 
 					VALUES ($1, $2, $3, $4, 'waiting', $5, $6) RETURNING contest_id`
 	GetOneContest = `SELECT contest_id, english_name, status, has_souvenir, has_thumbnail, has_special_award, open_time, close_time FROM contests WHERE contest_id = $1`
+	DeleteContest = `DELETE FROM contests WHERE contest_id = $1`
 )
 
 type Contests struct {
@@ -185,4 +186,17 @@ func (w *WebPanel) EditContest(c *gin.Context) {
 
 func (w *WebPanel) EditContestPOST(c *gin.Context) {
 	c.HTML(http.StatusOK, "edit_contest.html", nil)
+}
+
+func (w *WebPanel) DeleteContest(c *gin.Context) {
+	contestId := c.Param("contest_id")
+	_, err := w.Pool.Exec(w.Ctx, DeleteContest, contestId)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	c.Redirect(http.StatusFound, "/panel/contests")
 }

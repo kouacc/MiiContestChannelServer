@@ -61,6 +61,7 @@ func main() {
 		auth.GET("/contests", panel.ViewContests)
 		auth.GET("/contests/add", panel.AddContest)
 		auth.POST("/contests/add", panel.AddContestPOST)
+		auth.POST("/contests/delete/:contest_id", panel.DeleteContest)
 		auth.GET("/contests/edit/:contest_id", panel.EditContest)
 		auth.POST("/contests/edit/:contest_id", panel.EditContestPOST)
 		auth.GET("/plaza", panel.ViewPlaza)
