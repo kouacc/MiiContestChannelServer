@@ -39,7 +39,9 @@
             <p>{{.MiiId}}</p>
             <p>{{.Likes}}</p>
             <p>{{.PermLikes}}</p>
-            <p>{{.MiiData}}</p>
+            <!-- <p>{{.MiiDataEncoded}}</p>
+            <img src="https://miicontestp.wii.rc24.xyz/cgi-bin/render.cgi?data={{.MiiDataEncoded}}"></img> -->
+            <button onclick="deleteEntry(EntryId)">Delete Entry</button>
         </div>
         {{end}}
         <button onclick="deleteEntry(5)">Delete Entry</button>

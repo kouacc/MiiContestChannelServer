@@ -15,6 +15,7 @@ const (
 	GetContests = `SELECT contest_id, english_name, status, has_souvenir, has_thumbnail, has_special_award, open_time, close_time FROM contests ORDER BY contest_id`
 	AddContest  = `INSERT INTO contests (has_special_award, has_thumbnail, has_souvenir, english_name, status, open_time, close_time) 
 					VALUES ($1, $2, $3, $4, 'waiting', $5, $6) RETURNING contest_id`
+	GetOneContest = `SELECT contest_id, english_name, status, has_souvenir, has_thumbnail, has_special_award, open_time, close_time FROM contests WHERE contest_id = $1`
 )
 
 type Contests struct {
@@ -160,4 +161,28 @@ func (w *WebPanel) AddContestPOST(c *gin.Context) {
 	}
 
 	c.Redirect(http.StatusPermanentRedirect, "/panel/contests")
+}
+
+func (w *WebPanel) EditContest(c *gin.Context) {
+	contestId := c.Param("contest_id")
+    //fetch the contest data
+    row := w.Pool.QueryRow(w.Ctx, GetOneContest, contestId)
+
+    var contestdata Contests
+    err := row.Scan(&contestdata.ContestId, &contestdata.Name, &contestdata.Status, &contestdata.HasSouvenir, &contestdata.HasThumbnail, &contestdata.HasSpecialAward, &contestdata.OpenTime, &contestdata.CloseTime)
+    if err != nil {
+        c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+            "Error": err.Error(),
+        })
+        return
+    }
+
+
+	c.HTML(http.StatusOK, "edit_contest.html", gin.H{
+		"ContestInfo": contestdata,
+	})
+}
+
+func (w *WebPanel) EditContestPOST(c *gin.Context) {
+	c.HTML(http.StatusOK, "edit_contest.html", nil)
 }

@@ -7,11 +7,10 @@ import (
 )
 
 const (
-	GetPlaza = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id`
-	DeleteMii = `DELETE FROM miis WHERE entry_id = $1`
+	GetArtisans = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id`
 )
 
-type Plaza struct {
+type Artisans struct {
 	EntryId int
 	ArtisanId int
 	Initials string
@@ -26,7 +25,7 @@ type Plaza struct {
 	MiiDataEncoded string
 }
 
-func (w *WebPanel) ViewPlaza(c *gin.Context) {
+func (w *WebPanel) ViewArtisans(c *gin.Context) {
 	rows, err := w.Pool.Query(w.Ctx, GetPlaza)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
@@ -50,22 +49,9 @@ func (w *WebPanel) ViewPlaza(c *gin.Context) {
 		plaza = append(plaza, plazadata)
 	}
 
-	c.HTML(http.StatusOK, "view_plaza.html", gin.H{
+	c.HTML(http.StatusOK, "view_artisans.html", gin.H{
 		"numberOfMiis": len(plaza),
 		"Plaza":         plaza,
 
 	})
-}
-
-func (w *WebPanel) DeleteMii(c *gin.Context) {
-	entryId := c.Param("entry_id")
-	_, err := w.Pool.Exec(w.Ctx, DeleteMii, entryId)
-	if err != nil {
-		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
-			"Error": err.Error(),
-		})
-		return
-	}
-
-	c.Redirect(http.StatusFound, "/panel/plaza")
 }
