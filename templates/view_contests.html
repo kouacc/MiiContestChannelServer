@@ -100,7 +100,7 @@
                     <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55 blur-lg z-0 absolute">
                     {{end}}
                     <div class="flex flex-col">
-                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
+                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
                     <div class="flex items-center flex-row gap-3">
                         {{ if .HasSpecialAward}}
                         <i class="fa-solid fa-wand-sparkles text-2xl"></i>
@@ -111,7 +111,7 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
+                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-blue-400 hover:bg-sky-70">
                         <button><i class="fa-solid fa-pen-to-square"></i></button>
                     </a>
                     <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
@@ -144,7 +144,7 @@
                     <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55 blur-lg z-0 absolute">
                     {{end}}
                     <div class="flex flex-col">
-                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
+                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
                     <div class="flex items-center flex-row gap-3">
                         {{ if .HasSpecialAward}}
                         <i class="fa-solid fa-wand-sparkles text-2xl"></i>
@@ -155,7 +155,7 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
+                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-green-400 hover:bg-sky-70">
                         <button><i class="fa-solid fa-pen-to-square"></i></button>
                     </a>
                     <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
@@ -188,7 +188,7 @@
                     <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg opacity-55 blur-lg z-0 absolute">
                     {{end}}
                     <div class="flex flex-col">
-                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 bg-slate-300 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
+                    <h1 class="font-bold flex flex-row gap-2 text-[22px] pb-2">{{ .Name }} <span class="flex flex-row items-center pl-2 pr-2 opacity-30 rounded-md text-sm font-medium"><p class="openTime">{{ .OpenTime }}</p> - <p class="closeTime">{{ .CloseTime }}</p></span></h1>
                     <div class="flex items-center flex-row gap-3">
                         {{ if .HasSpecialAward}}
                         <i class="fa-solid fa-wand-sparkles text-2xl"></i>
@@ -199,7 +199,7 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
+                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-red-400 hover:bg-sky-70">
                         <button><i class="fa-solid fa-pen-to-square"></i></button>
                     </a>
                     <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
