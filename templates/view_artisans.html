@@ -158,12 +158,13 @@
               </p>
             </div>
           </div>
-          <div class="pb-3 flex flex-row items-center justify-between">
+          <div class="pb-3 flex gap-3 flex-row items-center justify-between">
             <p class="flex flex-col text-xl">
               <span class="opacity-30 text-sm">Wii Number</span>{{ .WiiNumber }}
             </p>
-            <div class="flex flex-row items-center">
-              <p class="opacity-30 text-right">{{ .LastPost }}</p>
+            <div class="flex flex-col justify-end">
+              <span class="opacity-30 text-sm text-right">Last Post</span>
+              <p class="lastPost opacity-30 text-right">{{ .LastPost }}</p>
             </div>
           </div>
         </div>
@@ -215,6 +216,26 @@
             console.error("Failed to render Mii:", error);
           }
         }
+
+        document.querySelectorAll(".lastPost").forEach((element) => {
+          // Parse the date string
+          const dateString = element.textContent.trim(); // Assuming the format "2024-06-17 12:51:36 +0000 UTC"
+          const dateParts = dateString.split(" ");
+          const date = new Date(dateParts[0] + "T" + dateParts[1] + "Z"); // Convert to ISO format
+
+          // Format the date and time
+          const formattedDate = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZoneName: "short",
+          });
+
+          // Update the element's text
+          element.textContent = formattedDate;
+        });
 
         const ids = ["toggleOpen"];
         ids.forEach((id) => {
