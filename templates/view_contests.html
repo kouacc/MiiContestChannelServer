@@ -88,11 +88,12 @@
 </div>
 </div>
 <div id="default-tab-content">
-    <div class="p-4 rounded-lg bg-blue-100 dark:text-slate-900" id="total" role="tabpanel" aria-labelledby="total-tab">
+    <div class="p-2 rounded-lg dark:text-slate-900" id="total" role="tabpanel" aria-labelledby="total-tab">
+        <hr class="border-t-4 border-blue-400 rounded-full">
         <div class="mt-4 flex flex-col rounded-sm">
             <div class="flex flex-col">
                 {{range .Contests}}
-                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-blue-100 items-center justify-between gap-8 overflow-hidden">
+                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-opacity-10 odd:dark:text-white odd:bg-blue-400 even:bg-blue-200 items-center justify-between gap-8 overflow-hidden">
                     <div class="flex flex-row flex-wrap items-center gap-3">
                         {{ if .HasThumbnail}}
                     <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg z-10 relative">
@@ -131,11 +132,12 @@
             </div>
         </div>
     </div>
-    <div class="hidden p-4 rounded-lg bg-green-100 dark:text-slate-900" id="active" role="tabpanel" aria-labelledby="active-tab">
+    <div class="hidden p-2 rounded-lg dark:text-slate-900" id="active" role="tabpanel" aria-labelledby="active-tab">
+        <hr class="border-t-4 border-green-400 rounded-full">
         <div class="mt-4 flex flex-col rounded-sm">
             <div class="flex flex-col">
                 {{range .ActiveContests}}
-                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-green-100 items-center justify-between gap-8">
+                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-opacity-10 odd:dark:text-white odd:bg-green-400 even:bg-green-100 items-center justify-between gap-8">
                     <div class="flex flex-row flex-wrap items-center gap-3">
                         {{ if .HasThumbnail}}
                     <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg z-10 relative">
@@ -174,11 +176,12 @@
             </div>
         </div>
     </div>
-    <div class="hidden p-4 rounded-lg bg-red-100 dark:text-slate-900" id="ended" role="tabpanel" aria-labelledby="ended-tab">
+    <div class="hidden p-2 rounded-lg dark:text-slate-900" id="ended" role="tabpanel" aria-labelledby="ended-tab">
+        <hr class="border-t-4 border-red-400 rounded-full">
         <div class="mt-4 flex flex-col rounded-sm">
             <div class="flex flex-col">
                 {{range .WaitingContests}}
-                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-white odd:bg-opacity-60 even:bg-red-100 items-center justify-between gap-8">
+                <div class="flex flex-row mb-4 p-4 rounded-lg odd:bg-opacity-10 odd:dark:text-white odd:bg-red-400 even:bg-red-100 items-center justify-between gap-8">
                     <div class="flex flex-row flex-wrap items-center gap-3">
                         {{ if .HasThumbnail}}
                     <img src='{{printf "/assets/contest/%d/thumbnail.jpg" .ContestId}}' class="mr-4 w-20 h-20 rounded-lg z-10 relative">
