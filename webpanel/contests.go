@@ -161,7 +161,46 @@ func (w *WebPanel) AddContestPOST(c *gin.Context) {
 		}
 	}
 
+	if hasSouvenir {
+		f, err := souvenir.Open()
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		//i'll let sketch figure out the rest
+
+		buffer := new(bytes.Buffer)
+		_, err = io.Copy(buffer, f)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		//need to confirm the required size, for now 96x96
+		resized, err := resize(buffer, 96, 96)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		//Write unencrypted souvenir
+		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/souvenir.jpg", w.Config.AssetsPath, contestId), resized, 0666)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+
 	c.Redirect(http.StatusPermanentRedirect, "/panel/contests")
+}
 }
 
 func (w *WebPanel) EditContest(c *gin.Context) {
