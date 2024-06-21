@@ -16,18 +16,231 @@
       crossorigin="anonymous"
     ></script>
 </head>
-<body>
-    <main class="container">
-        <div>
-            <p>{{ .ContestInfo.ContestId }}</p>
-            <p>{{ .ContestInfo.Name }}</p>
-            <p>{{ .ContestInfo.Status }}</p>
-            <p>{{ .ContestInfo.HasSouvenir }}</p>
-            <p>{{ .ContestInfo.HasThumbnail }}</p>
-            <p>{{ .ContestInfo.HasSpecialAward }}</p>
-            <p>{{ .ContestInfo.OpenTime }}</p>
-            <p>{{ .ContestInfo.CloseTime }}</p>
+  <body class="dark:text-white dark:bg-slate-800">
+    <main class="container py-20">
+
+      <div class="fixed">
+        <p id="contestId">{{ .ContestInfo.ContestId }}</p>
+        <p id="name">{{ .ContestInfo.Name }}</p>
+        <p id="status">{{ .ContestInfo.Status }}</p>
+        <p id="hasSouvenir">{{ .ContestInfo.HasSouvenir }}</p>
+        <p id="hasThumnail">{{ .ContestInfo.HasThumbnail }}</p>
+        <p id="hasSpecialAward">{{ .ContestInfo.HasSpecialAward }}</p>
+        <p id="openTime">{{ .ContestInfo.OpenTime }}</p>
+        <p id="closeTime">{{ .ContestInfo.CloseTime }}</p>
+    </div>
+
+        <div class=" pb-6 flex items-center justify-between">
+            <div class="flex flex-row gap-3 items-center">
+        <img src="https://www.wiilink24.com/img/IS-logo.png" class="dark:invert" style="height:60px !important;">
+        <i class="fa-solid fa-chevron-right text-2xl cursor-pointer" onclick="toggleOpen('toggleOpen');"></i>
+        <div id="toggleOpen" class="p-2 flex-row items-center gap-3 rounded-xl bg-gray-50 dark:bg-slate-500 hidden">
+            <a href="/panel/contests"><button class="p-2 hover:bg-gray-300 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-flag-checkered"></i> Contests</button></a> |
+            <a href="/panel/contests/add"><button class="p-2 bg-gray-200 dark:bg-slate-600 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-circle-plus"></i> Add Contest</button></a> |
+            <a href="/panel/plaza"><button class="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-users"></i> Plaza</button></a> |
+            <a href="/panel/artisans"><button class="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-brush"></i> Mii Artisans</button></a>
         </div>
+    </div>
+        <h2 class="text-right text-lg"><b>CMOC</b><br> Control Panel</h2>
+    </div>
+    <hr class="pt-6">
+      <div class="flex items-center justify-between">
+        <a
+          class="col-span-2 inline-flex gap-3 items-center"
+          href="/panel/contests"
+          ><i class="fa-solid fa-chevron-left"></i>
+          <p class="hover:underline">Return to Contests</p></a
+        >
+        <p class="opacity-50">
+          CMOC <i class="fa-solid fa-caret-right"></i> Contests
+          <i class="fa-solid fa-caret-right"></i> Edit Contest
+          <i class="fa-solid fa-caret-right"></i> {{ .ContestInfo.ContestId }}
+        </p>
+      </div>
+      <br />
+      {{if .Error}}
+      <p style="color: red">{{.Error}}</p>
+      {{end}}
+      <div
+        class="w-100 h-50 p-20 rounded-3xl bg-[url('https://rc24.xyz/goodies/wallpapers/CMO_Channel_BG_orange_1600x900.png')] shadow-[0px 0px 60px #d3d68c60]"
+      >
+        <div
+          class="p-2 rounded-3xl border-[5px] border-white bg-[rgb(76,130,163)] shadow-2xl z-10 relative"
+        >
+          <p class="ml-1 text-white text-lg">
+            <span id="randomInt"></span> days remaining
+          </p>
+          <div class="mt-2 bg-white p-1 rounded-xl flex flex-row items-center">
+            <img
+              id="thumbnailPreview"
+              src="https://cdn.discordapp.com/attachments/1105166064326803496/1253421730332934174/Screenshot_2024-06-20_at_20.50.18.png?ex=6675cb73&is=667479f3&hm=c9721b16f6b337342b96aa2f202c91b9d569cab6c1226d2b7bb9dd05685c00a8&"
+              alt="Thumbnail Preview"
+              class="p-1 mr-40 w-32 h-32 rounded-xl"
+            />
+            <h2
+              id="contestName"
+              class="col-start-1 col-span-full text-2xl text-black"
+            ></h2>
+          </div>
+        </div>
+        <img
+          id="souvenirPreview2"
+          class="w-80 hidden rounded-3xl shadow-2xl z-0 absolute"
+          style="
+            right: 0 !important;
+            transform: translate(-100%, -70%) rotate(3deg);
+          "
+        />
+      </div>
+      <br />
+      <br />
+      <div class="w-full p-6 mb-8 bg-blue-400 rounded-lg flex flex-row items-center justify-center"><i class="fa-solid fa-triangle-exclamation mr-3 text-xl"></i> You are currently <b class="ml-1 mr-1">editing</b> the Contest "<p id="name">{{ .ContestInfo.Name }}</p>" with ID "<p id="name">{{ .ContestInfo.ContestId }}</p>".</div>
+      <form
+        action="/panel/contests/add"
+        method="post"
+        enctype="multipart/form-data"
+        class="col-start-1 col-span-full main_grid rounded-xl"
+      >
+        <div
+          class="input col-start-1 col-span-8 p-2 border rounded-xl bg-neutral-100 dark:bg-slate-600 dark:border-slate-500"
+        >
+          <label>Contest Name</label>
+          <input
+            type="text"
+            name="name"
+            required
+            value="{{ .ContestInfo.Name }}"
+            placeholder="Contest Name"
+            class="border rounded-lg p-2 text-black"
+            oninput="updateContestName(event)"
+          />
+        </div>
+        <div
+          class="input col-start-9 col-span-4 p-2 border rounded-xl bg-neutral-100 dark:bg-slate-600 dark:border-slate-500"
+        >
+          <label class="flex items-center justify-between"
+            >Open Time
+            <i
+              class="fa-regular fa-circle-question opacity-60 cursor-pointer"
+              title="Polls will automatically close after a week of being created. They will be judged after a month."
+            ></i
+          ></label>
+          <input
+            type="date"
+            name="open_time"
+            required
+            class="rounded-xl px-5 py-2 border border-slate-200 text-black"
+            value="{{.ContestInfo.OpenTime}}"
+          />
+        </div>
+        <div
+          class="input col-start-1 col-span-3 p-2 border rounded-xl bg-neutral-100 dark:bg-slate-600 dark:border-slate-500"
+        >
+          <span>Has Special Award?</span>
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="special_award" value="{{.ContestInfo.HasSpecialAward}}" class="sr-only peer" />
+            <div
+              class="text-black relative w-full p-4 bg-gray-50 border rounded-xl hover:scale-105 hover:-rotate-1 transition-all peer peer-checked:-rotate-1 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white before:content-['No'] peer-checked:after:content-['Yes'] peer-checked:before:content-[''] after:content-[''] after:text-white after:bg-blue-500 after:border-0 after:rounded-full after:transition-all peer-checked:bg-blue-500"
+            ></div>
+          </label>
+        </div>
+        <div
+          class="input col-start-4 col-span-3 p-2 border rounded-xl bg-neutral-100 dark:bg-slate-600 dark:border-slate-500"
+        >
+          <span>Thumbnail</span>
+          <label
+            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 dark:text-black flex items-center justify-between gap-3"
+            ><i class="fa-solid fa-circle-plus"></i>Add file
+            <input
+              type="file"
+              name="thumbnail"
+              type="image/png"
+              class="hidden"
+              onchange="previewImage(event, 'thumbnailPreview', 'thumbnailPreview2')"
+            />
+            <img
+              id="thumbnailPreview2"
+              class="w-5 scale-150 hidden rounded-md shadow-md rotate-3"
+            />
+          </label>
+        </div>
+        <div
+          class="input col-start-7 col-span-6 p-2 border rounded-xl bg-neutral-100 dark:bg-slate-600 dark:border-slate-500"
+        >
+          <span>Souvenir</span>
+          <label
+            class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 dark:text-black flex items-center justify-between gap-3"
+            ><i class="fa-solid fa-circle-plus"></i>Add file
+            <input
+              type="file"
+              name="souvenir"
+              type="image/png"
+              class="hidden"
+              onchange="previewImage(event, 'souvenirPreview', 'souvenirPreview2')"
+            />
+            <img
+              id="souvenirPreview"
+              class="w-5 scale-150 hidden rounded-md shadow-md rotate-3"
+            />
+          </label>
+        </div>
+        <input
+          type="submit"
+          value="Save Changes"
+          class="font-bold submit_button col-end-13 place-self-end"
+        />
+      </form>
+      <br />
+      <hr />
+      <br />
+      <p>©2020 - 2024 WiiLink Team</p>
     </main>
-</body>
+  </body>
+
+  <script>
+    function previewImage(event, id, id2) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const output = document.getElementById(id);
+        const output2 = document.getElementById(id2);
+        output.src = reader.result;
+        output2.src = reader.result;
+        output.classList.remove("hidden");
+        output2.classList.remove("hidden");
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function updateContestName(event) {
+      document.getElementById("contestName").textContent = event.target.value;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const ids = ['toggleOpen'];
+    ids.forEach(id => {
+        const element = document.getElementById(id);
+        const state = localStorage.getItem(id);
+        if (state === 'open') {
+            element.style.display = 'flex';
+        } else if (state === 'closed') {
+            element.style.display = 'none';
+        }
+    });
+
+      document.getElementById("randomInt").innerHTML = Math.floor(
+        Math.random() * (10 - 2 + 1) + 2
+      );
+    });
+
+    function toggleOpen(id) {
+        const element = document.getElementById(id);
+        if (element.style.display === 'none') {
+            element.style.display = 'flex';
+            localStorage.setItem(id, 'open');
+        } else {
+            element.style.display = 'none';
+            localStorage.setItem(id, 'closed');
+        }
+    }
+  </script>
 </html>
