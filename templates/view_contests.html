@@ -13,13 +13,20 @@
   </head>
   <body class="dark:text-white dark:bg-slate-800">
     <main class="container py-20 space-y-4">
-        <div class="flex items-center justify-between">
-        <img src="https://cdn.discordapp.com/attachments/1090989036358864917/1253113607127044198/image.png?ex=6675553d&is=667403bd&hm=8d8fad714ff5f1d8bf962ea03765f8fa75a216682a48a99b83d7852c464747bc&" class="dark:invert" style="height:60px !important;">
+        <div class=" pb-2 flex items-center justify-between">
+            <div class="flex flex-row gap-3 items-center">
+        <img src="https://www.wiilink24.com/img/IS-logo.png" class="dark:invert" style="height:60px !important;">
+        <i class="fa-solid fa-chevron-right text-2xl cursor-pointer" onclick="toggleOpen('toggleOpen');"></i>
+        <div id="toggleOpen" class="p-2 flex-row items-center gap-3 rounded-xl bg-gray-50 dark:bg-slate-500 hidden">
+            <a href="/panel/contests"><button class="p-2 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-flag-checkered"></i> Contests</button></a> |
+            <a href="/panel/contests/add"><button class="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-circle-plus"></i> Add Contest</button></a> |
+            <a href="/panel/plaza"><button class="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-users"></i> Plaza</button></a> |
+            <a href="/panel/artisans"><button class="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"><i class="fa-solid fa-brush"></i> Mii Artisans</button></a>
+        </div>
+    </div>
         <h2 class="text-right text-lg"><b>CMOC</b><br> Control Panel</h2>
     </div>
-    <br>
-    <hr>
-    <br>
+    <hr class="pt-2">
     <div class="flex justify-between">
         <h1>Contests</h1>
         <a href="/panel/contests/add" class="submit_button hover:bg-sky-70">
@@ -37,7 +44,12 @@
           <span class="font-serif font-bold text-6xl"
             >{{.numberOfActiveContests}}</span
           >
+          <div class="flex flex-row items-center justify-center gap-3">          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+          </span>
           <h3>Active Contests</h3>
+        </div>
         </li>
         <li class="text-white text-center p-3 bg-red-400 grow rounded-[8px_18px_18px_8px]">
           <span class="font-serif font-bold text-6xl"
@@ -55,7 +67,7 @@
 <div class="">
     <ul class="flex rounded-xl p-1 bg-gray-50 dark:bg-slate-500 border-2 border-gray-100 dark:border-slate-500 flex-wrap text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
         <li class="me-2" role="presentation">
-            <button class="inline-block p-3 rounded-lg bg-gray-200 dark:bg-slate-600 shadow-sm transition-all hover:bg-gray-200 dark:hover:bg-slate-800 hover:shadow-sm" id="total-tab" data-tabs-target="#total" type="button" role="tab" aria-controls="profile" aria-selected="false">Total</button>
+            <button class="inline-block p-3 rounded-lg bg-gray-200 dark:bg-slate-800 shadow-sm transition-all hover:bg-gray-200 dark:hover:bg-slate-800 hover:shadow-sm" id="total-tab" data-tabs-target="#total" type="button" role="tab" aria-controls="profile" aria-selected="false">Total</button>
         </li>
         <li class="me-2" role="presentation">
             <button class="inline-block p-3 rounded-lg transition-all hover:bg-gray-200 dark:hover:bg-slate-800 hover:shadow-sm" id="active-tab" data-tabs-target="#active" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Active</button>
@@ -187,7 +199,9 @@
     <p class="pt-3 opacity-30 text-right">
     The <i class="fa-solid fa-wand-sparkles"></i> and <i class="fa-solid fa-gift"></i> icon mean the contest has a Special Award and Souvenir, respectively.
 </p>
-<br>
+<br />
+<hr />
+<br />
 <p>©2020 - 2024 WiiLink Team</p>
 </div>
     </main>
@@ -196,6 +210,17 @@
     document.addEventListener('DOMContentLoaded', function () {
         const tabs = document.querySelectorAll('button[data-tabs-target]');
         const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+
+        const ids = ['toggleOpen'];
+    ids.forEach(id => {
+        const element = document.getElementById(id);
+        const state = localStorage.getItem(id);
+        if (state === 'open') {
+            element.style.display = 'flex';
+        } else if (state === 'closed') {
+            element.style.display = 'none';
+        }
+    });
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
@@ -212,7 +237,7 @@
                 // Remove bg-gray-200 and shadow-sm from all tabs
                 tabs.forEach(t => {
                     t.setAttribute('aria-selected', 'false');
-                    t.classList.remove('bg-gray-200', 'shadow-sm', 'dark:bg-slate-700');
+                    t.classList.remove('bg-gray-200', 'shadow-sm', 'dark:bg-slate-700', 'dark:bg-slate-800');
                 });
 
                 // Set aria-selected="true" and add bg-gray-200 and shadow-sm to the clicked tab
@@ -234,6 +259,17 @@
         const day = date.getDate();
         const month = date.getMonth() + 1; // getMonth() returns 0-11
         return `${day}/${month}`;
+    }
+
+    function toggleOpen(id) {
+        const element = document.getElementById(id);
+        if (element.style.display === 'none') {
+            element.style.display = 'flex';
+            localStorage.setItem(id, 'open');
+        } else {
+            element.style.display = 'none';
+            localStorage.setItem(id, 'closed');
+        }
     }
 
     // Update elements with the formatted date
