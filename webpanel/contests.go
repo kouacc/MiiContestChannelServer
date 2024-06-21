@@ -19,6 +19,7 @@ const (
 					VALUES ($1, $2, $3, $4, 'waiting', $5, $6) RETURNING contest_id`
 	GetOneContest = `SELECT contest_id, english_name, status, has_souvenir, has_thumbnail, has_special_award, open_time, close_time FROM contests WHERE contest_id = $1`
 	DeleteContest = `DELETE FROM contests WHERE contest_id = $1`
+	DeleteContestEntries = `DELETE FROM contest_miis WHERE contest_id = $1`
 	UpdateContest = `UPDATE contests SET english_name = $1, open_time = $2, has_special_award = $3, has_thumbnail = $4, has_souvenir = $5 WHERE contest_id = $6`
 )
 
@@ -237,7 +238,12 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 
 	//convert the contest id to uint32
 	contestIdInt, err := strconv.Atoi(strContestId)
-
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
 
 	//convert the award, thumbnail and souvenir to boolean
 	specialAward := false
@@ -363,13 +369,24 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 
 func (w *WebPanel) DeleteContest(c *gin.Context) {
 	contestId := c.Param("contest_id")
-	_, err := w.Pool.Exec(w.Ctx, DeleteContest, contestId)
+	//delete the contest entries first
+	_, err := w.Pool.Exec(w.Ctx, DeleteContestEntries, contestId)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
 		})
 		return
 	}
+	//delete the contest when the entries are deleted
+	_, err = w.Pool.Exec(w.Ctx, DeleteContest, contestId)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	
 
 	c.Redirect(http.StatusFound, "/panel/contests")
 }
