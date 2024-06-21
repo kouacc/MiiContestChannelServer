@@ -89,9 +89,9 @@
       <div class="grid magic_grid gap-3">
         {{ range .Plaza }}
         <div
-          class="flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700"
+          class="flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700 hover:scale-102 hover:shadow-lg transition-all"
         >
-          <div class="flex flex-row items-center justify-between">
+            <a href="/panel/plaza/details/{{.EntryId}}" class="flex flex-row items-center justify-between">
             <div class="flex flex-row items-center">
               <p class="miiData hidden">{{.MiiDataEncoded}}</p>
               <img src="" class="miiImage h-28" />
@@ -116,8 +116,7 @@
                 <i class="fa-solid fa-angles-up"></i> {{.PermLikes}}
               </p>
             </div>
-          </div>
-
+        </a>
           <div class="w-care ml-5 mr-5 flex flex-row gap-3">
             <p
               class="w-full p-1 pl-3 pr-3 bg-gray-300 text-gray-300 dark:bg-slate-800 dark:text-slate-800 active:bg-white active:text-black transition-all rounded-full text-center"
@@ -133,7 +132,7 @@
             <i class="fa-solid fa-trash"></i> Delete this Mii
           </button>
           <p class="mr-5 mb-5 opacity-30 text-right">
-            {{.EntryId}} | <a href="/panel/artisans/details/{{.ArtisanId}}" class="underline">{{.ArtisanName}} ({{.ArtisanId}})</a> | {{.MiiId}}
+            Id: {{.EntryId}} | <a href="/panel/artisans/details/{{.ArtisanId}}" class="underline">{{.ArtisanName}} ({{.ArtisanId}})</a> | {{.MiiId}}
             <i class="fa-solid fa-fingerprint"></i>
           </p>
         </div>

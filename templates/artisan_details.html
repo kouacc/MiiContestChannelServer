@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>"{{ .ArtisanDetails.Name }}" Artisan Info - CMOC Control Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
@@ -66,7 +66,13 @@
         </h2>
       </div>
       <hr class="pt-2" />
-      <div class="flex items-center justify-end">
+      <div class="flex items-center justify-between">
+        <a
+        class="col-span-2 inline-flex gap-3 items-center"
+        href="/panel/artisans"
+        ><i class="fa-solid fa-chevron-left"></i>
+        <p class="hover:underline">Return to Mii Artisans</p></a
+      >
         <p class="opacity-50">
           CMOC <i class="fa-solid fa-caret-right"></i> Mii Artisans
           <i class="fa-solid fa-caret-right"></i> {{ .ArtisanDetails.ArtisanId }}
@@ -125,8 +131,8 @@
     </div>
         <div class="grid magic_grid gap-3">
             {{ range .Miis }}
-            <div class="flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700">
-                <div class="flex flex-row items-center justify-between">
+            <div class="flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700 hover:scale-102 hover:shadow-lg transition-all">
+                <a href="/panel/plaza/details/{{.EntryId}}" class="flex flex-row items-center justify-between">
                     <div class="flex flex-row items-center">
                         <p class="miiData hidden">{{.MiiDataEncoded}}</p>
                         <img src="" class="miiImage h-28" />
@@ -150,7 +156,7 @@
                             <i class="fa-solid fa-angles-up"></i> {{.PermLikes}}
                         </p>
                     </div>
-                </div>
+                </a>
                 <button class="delete_button" onclick='deleteEntry("{{.EntryId}}")'>
                     <i class="fa-solid fa-trash"></i> Delete this Mii
                 </button>
