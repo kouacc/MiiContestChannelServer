@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -59,6 +60,9 @@ func main() {
 	{
 		auth.GET("/admin", panel.AdminPage)
 		auth.GET("/contests", panel.ViewContests)
+		auth.POST("/contests", func(c *gin.Context) {
+    		c.Redirect(http.StatusMovedPermanently, "/panel/contests")
+		})
 		auth.GET("/contests/add", panel.AddContest)
 		auth.POST("/contests/add", panel.AddContestPOST)
 		auth.POST("/contests/delete/:contest_id", panel.DeleteContest)
