@@ -170,7 +170,7 @@ func (w *WebPanel) AddContestPOST(c *gin.Context) {
 			return
 		}
 
-		//i'll let sketch figure out the rest
+		//TODO create the encrypted souvenir
 
 		buffer := new(bytes.Buffer)
 		_, err = io.Copy(buffer, f)

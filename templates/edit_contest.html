@@ -41,7 +41,7 @@
   </head>
   <body class="dark:text-white dark:bg-slate-800">
     <main class="container py-20">
-      <div class="fixed">
+      <!-- <div class="fixed">
         <p id="contestId">{{ .ContestInfo.ContestId }}</p>
         <p id="name">{{ .ContestInfo.Name }}</p>
         <p id="status">{{ .ContestInfo.Status }}</p>
@@ -50,14 +50,13 @@
         <p id="hasSpecialAward">{{ .ContestInfo.HasSpecialAward }}</p>
         <p id="openTime">{{ .ContestInfo.OpenTime }}</p>
         <p id="closeTime">{{ .ContestInfo.CloseTime }}</p>
-      </div>
+      </div> -->
 
       <div class="pb-6 flex items-center justify-between">
         <div class="flex flex-row gap-3 items-center">
           <img
             src="https://www.wiilink24.com/img/IS-logo.png"
-            class="dark:invert"
-            style="height: 60px !important"
+            class="!h-[60px] dark:invert"
           />
           <i
             class="fa-solid fa-chevron-right text-2xl cursor-pointer"
@@ -135,7 +134,7 @@
           <div class="mt-2 bg-white p-1 rounded-xl flex flex-row items-center">
             <img
               id="thumbnailPreview"
-              src="https://cdn.discordapp.com/attachments/1105166064326803496/1253421730332934174/Screenshot_2024-06-20_at_20.50.18.png?ex=6675cb73&is=667479f3&hm=c9721b16f6b337342b96aa2f202c91b9d569cab6c1226d2b7bb9dd05685c00a8&"
+              src="{{if .ContestInfo.HasThumbnail}}/assets/contest/{{ .ContestInfo.ContestId }}/thumbnail.jpg{{else}}https://cdn.discordapp.com/attachments/1105166064326803496/1253421730332934174/Screenshot_2024-06-20_at_20.50.18.png?ex=6675cb73&is=667479f3&hm=c9721b16f6b337342b96aa2f202c91b9d569cab6c1226d2b7bb9dd05685c00a8&{{end}}"
               alt="Thumbnail Preview"
               class="p-1 mr-40 w-32 h-32 rounded-xl"
             />
@@ -147,11 +146,8 @@
         </div>
         <img
           id="souvenirPreview2"
-          class="w-80 hidden rounded-3xl shadow-2xl z-0 absolute"
-          style="
-            right: 0 !important;
-            transform: translate(-100%, -70%) rotate(3deg);
-          "
+          class="w-80 hidden rounded-3xl shadow-2xl z-0 absolute !right-0 -translate-x-full -translate-y-[70%] rotate-3 {{if .ContestInfo.HasSouvenir}}!block{{end}}"
+          {{if .ContestInfo.HasSouvenir}}src="/assets/contest/{{ .ContestInfo.ContestId }}/souvenir.jpg"{{end}}
         />
       </div>
       <br />
@@ -201,7 +197,7 @@
             name="open_time"
             required
             class="rounded-xl px-5 py-2 border border-slate-200 text-black"
-            value="{{.ContestInfo.OpenTime}}"
+            value="{{.ContestInfo.OpenTime.Format "2006-01-02"}}"
           />
         </div>
         <div
@@ -236,7 +232,8 @@
             />
             <img
               id="thumbnailPreview2"
-              class="w-5 scale-150 hidden rounded-md shadow-md rotate-3"
+              class="w-5 scale-150 rounded-md hidden shadow-md rotate-3 {{if .ContestInfo.HasThumbnail}}!block{{end}}"
+              {{if .ContestInfo.HasThumbnail}}src="/assets/contest/{{ .ContestInfo.ContestId }}/thumbnail.jpg"{{end}}
             />
           </label>
         </div>
@@ -256,7 +253,8 @@
             />
             <img
               id="souvenirPreview"
-              class="w-5 scale-150 hidden rounded-md shadow-md rotate-3"
+              class="w-5 scale-150 rounded-md hidden shadow-md rotate-3 {{if .ContestInfo.HasThumbnail}}!block{{end}}"
+              {{if .ContestInfo.HasSouvenir}}src="/assets/contest/{{ .ContestInfo.ContestId }}/souvenir.jpg"{{end}}
             />
           </label>
         </div>
@@ -274,6 +272,7 @@
   </body>
 
   <script>
+    console.log("{{ .ContestInfo.OpenTime }}")
     function previewImage(event, id, id2) {
       const reader = new FileReader();
       reader.onload = function () {
