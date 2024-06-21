@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/WiiLink24/MiiContestChannel/contest"
@@ -199,10 +200,9 @@ func (w *WebPanel) AddContestPOST(c *gin.Context) {
 			})
 			return
 		}
-
+	}
 
 	c.Redirect(http.StatusPermanentRedirect, "/panel/contests")
-}
 }
 
 func (w *WebPanel) EditContest(c *gin.Context) {
@@ -232,16 +232,12 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 	strOpenTime := c.PostForm("open_time")
 	thumbnail, _ := c.FormFile("thumbnail")
 	souvenir, _ := c.FormFile("souvenir")
-	
+
 	strContestId := c.Param("contest_id")
 
-	//debug, print the form data
-	fmt.Println(name)
-	fmt.Println(strSpecialAward)
-	fmt.Println(strOpenTime)
-	fmt.Println(thumbnail)
-	fmt.Println(souvenir)
-	fmt.Println(strContestId)
+	//convert the contest id to uint32
+	contestIdInt, err := strconv.Atoi(strContestId)
+
 
 	//convert the award, thumbnail and souvenir to boolean
 	specialAward := false
@@ -269,7 +265,7 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 	}
 
 	//update the contest 
-	err = w.Pool.QueryRow(w.Ctx, UpdateContest, specialAward, hasThumbnail, hasSouvenir, name, openTime, openTime.AddDate(0, 0, 7)).Scan()
+	_, err = w.Pool.Exec(w.Ctx, UpdateContest, name, openTime.AddDate(0, 0, 7), specialAward, hasThumbnail, hasSouvenir, strContestId)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
 			"Error": err.Error(),
@@ -278,7 +274,7 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 	}
 	
 	//generate new thumbnail and souvenir
-	/* if hasThumbnail {
+	if hasThumbnail {
 		f, err := thumbnail.Open()
 		defer f.Close()
 		if err != nil {
@@ -306,7 +302,7 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 		}
 
 		// Create encrypted thumbnail
-		err = contest.MakeThumbnail(resized, contestId)
+		err = contest.MakeThumbnail(resized, uint32(contestIdInt))
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
 				"Error": err.Error(),
@@ -315,7 +311,7 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 		}
 
 		// Write unencrypted thumbnail
-		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/thumbnail.jpg", w.Config.AssetsPath, contestId), resized, 0666)
+		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/thumbnail.jpg", w.Config.AssetsPath, contestIdInt), resized, 0666)
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
 				"Error": err.Error(),
@@ -353,14 +349,14 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 			return
 		}
 		//Write unencrypted souvenir
-		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/souvenir.jpg", w.Config.AssetsPath, contestId), resized, 0666)
+		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/souvenir.jpg", w.Config.AssetsPath, contestIdInt), resized, 0666)
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
 				"Error": err.Error(),
 			})
 			return
 		}
-	} */
+	}
 
 	c.Redirect(http.StatusPermanentRedirect, "/panel/contests")
 }
