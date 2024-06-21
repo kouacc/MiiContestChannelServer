@@ -47,6 +47,8 @@ func (w *WebPanel) ViewArtisans(c *gin.Context) {
 			return
 		}
 
+		artisan.MiiDataEncoded = base64.StdEncoding.EncodeToString(artisan.MiiData)
+
 		artisans = append(artisans, artisan)
 	}
 
