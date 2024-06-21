@@ -141,7 +141,7 @@
             <h2
               id="contestName"
               class="col-start-1 col-span-full text-2xl text-black"
-            ></h2>
+            >{{ .ContestInfo.Name }}</h2>
           </div>
         </div>
         <img
@@ -163,7 +163,7 @@
         ".
       </div>
       <form
-        action="/panel/contests/add"
+        action="/panel/contests/edit/{{ .ContestInfo.ContestId }}"
         method="post"
         enctype="multipart/form-data"
         class="col-start-1 col-span-full main_grid rounded-xl"
@@ -273,7 +273,6 @@
   </body>
 
   <script>
-    console.log("{{ .ContestInfo.OpenTime }}")
     function previewImage(event, id, id2) {
       const reader = new FileReader();
       reader.onload = function () {

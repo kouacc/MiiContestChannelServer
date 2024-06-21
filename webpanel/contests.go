@@ -3,12 +3,13 @@ package webpanel
 import (
 	"bytes"
 	"fmt"
-	"github.com/WiiLink24/MiiContestChannel/contest"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/WiiLink24/MiiContestChannel/contest"
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -17,6 +18,7 @@ const (
 					VALUES ($1, $2, $3, $4, 'waiting', $5, $6) RETURNING contest_id`
 	GetOneContest = `SELECT contest_id, english_name, status, has_souvenir, has_thumbnail, has_special_award, open_time, close_time FROM contests WHERE contest_id = $1`
 	DeleteContest = `DELETE FROM contests WHERE contest_id = $1`
+	UpdateContest = `UPDATE contests SET english_name = $1, open_time = $2, has_special_award = $3, has_thumbnail = $4, has_souvenir = $5 WHERE contest_id = $6`
 )
 
 type Contests struct {
@@ -224,7 +226,143 @@ func (w *WebPanel) EditContest(c *gin.Context) {
 }
 
 func (w *WebPanel) EditContestPOST(c *gin.Context) {
-	c.HTML(http.StatusOK, "edit_contest.html", nil)
+	//Fetch the form data
+	name := c.PostForm("name")
+	strSpecialAward := c.PostForm("special_award")
+	strOpenTime := c.PostForm("open_time")
+	thumbnail, _ := c.FormFile("thumbnail")
+	souvenir, _ := c.FormFile("souvenir")
+	
+	strContestId := c.Param("contest_id")
+
+	//debug, print the form data
+	fmt.Println(name)
+	fmt.Println(strSpecialAward)
+	fmt.Println(strOpenTime)
+	fmt.Println(thumbnail)
+	fmt.Println(souvenir)
+	fmt.Println(strContestId)
+
+	//convert the award, thumbnail and souvenir to boolean
+	specialAward := false
+	hasThumbnail := false
+	hasSouvenir := false
+	if thumbnail != nil {
+		hasThumbnail = true
+	}
+
+	if souvenir != nil {
+		hasSouvenir = true
+	}
+
+	if strSpecialAward == "on" {
+		specialAward = true
+	}
+
+	//parse the date
+	openTime, err := time.Parse("2006-01-02", strOpenTime)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	//update the contest 
+	err = w.Pool.QueryRow(w.Ctx, UpdateContest, specialAward, hasThumbnail, hasSouvenir, name, openTime, openTime.AddDate(0, 0, 7)).Scan()
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+	
+	//generate new thumbnail and souvenir
+	/* if hasThumbnail {
+		f, err := thumbnail.Open()
+		defer f.Close()
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		buffer := new(bytes.Buffer)
+		_, err = io.Copy(buffer, f)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		resized, err := resize(buffer, 96, 96)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		// Create encrypted thumbnail
+		err = contest.MakeThumbnail(resized, contestId)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		// Write unencrypted thumbnail
+		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/thumbnail.jpg", w.Config.AssetsPath, contestId), resized, 0666)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+	}
+
+	if hasSouvenir {
+		f, err := souvenir.Open()
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		//TODO create the encrypted souvenir
+
+		buffer := new(bytes.Buffer)
+		_, err = io.Copy(buffer, f)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		//need to confirm the required size, for now 96x96
+		resized, err := resize(buffer, 96, 96)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		//Write unencrypted souvenir
+		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/souvenir.jpg", w.Config.AssetsPath, contestId), resized, 0666)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+	} */
+
+	c.Redirect(http.StatusPermanentRedirect, "/panel/contests")
 }
 
 func (w *WebPanel) DeleteContest(c *gin.Context) {
