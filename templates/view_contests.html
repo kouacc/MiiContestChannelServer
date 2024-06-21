@@ -89,7 +89,9 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
+                        <button><i class="fa-solid fa-pen-to-square"></i></button>
+                    </a>
                     <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
                 </div>
                     </div>
@@ -126,7 +128,9 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
+                        <button><i class="fa-solid fa-pen-to-square"></i></button>
+                    </a>
                     <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
                 </div>
                     </div>
@@ -163,7 +167,9 @@
                     {{ if .HasSpecialAward}}
                     |
                     {{end}}
-                    <button class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-slate-700 hover:bg-sky-70">
+                        <button><i class="fa-solid fa-pen-to-square"></i></button>
+                    </a>
                     <button class="p-2 pl-4 pr-4 rounded-full text-white bg-amber-600 hover:bg-sky-70" onclick='deleteEntry("{{.ContestId}}")'><i class="fa-solid fa-trash"></i></button>
                 </div>
                     </div>
