@@ -72,6 +72,7 @@ func main() {
 		auth.GET("/plaza/details/:entry_id", panel.ViewMiiDetails)
 		auth.POST("/plaza/delete/:entry_id", panel.DeleteMii)
 		auth.GET("/artisans", panel.ViewArtisans)
+		auth.GET("/artisans/details/:artisan_id", panel.ViewArtisanDetails)
 	}
 
 	r.POST("/cgi-bin/conpost.cgi", conPost)

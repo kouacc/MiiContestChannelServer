@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="/assets/output.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e47ece3e74.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <main class="container">
+        <div>
+            <h1>Artisan Details</h1>
+            <p>{{ .ArtisanDetails.ArtisanId }}</p>
+            <p>{{ .ArtisanDetails.Name }}</p>
+            <p>{{ .ArtisanDetails.CountryId }}</p>
+            <p>{{ .ArtisanDetails.WiiNumber }}</p>
+            <p>{{ .ArtisanDetails.MacAddress }}</p>
+            <p>{{ .ArtisanDetails.NumberOfPosts }}</p>
+            <p>{{ .ArtisanDetails.TotalLikes }}</p>
+            <p>{{ .ArtisanDetails.IsMaster }}</p>
+            <p>{{ .ArtisanDetails.LastPost }}</p>
+            <p>{{ .ArtisanDetails.MiiDataEncoded }}</p>
+        </div>
+        <h1>Miis</h1>
+        <h2>There are {{ .numberOfMiis }} Miis.</h2>
+        {{ range .Miis }}
+        <div class="border">
+            <p>{{ .EntryId }}</p>
+            <p>{{ .ArtisanId }}</p>
+            <p>{{ .Initials }}</p>
+            <p>{{ .Nickname }}</p>
+            <p>{{ .Gender }}</p>
+            <p>{{ .CountryId }}</p>
+            <p>{{ .WiiNumber }}</p>
+            <p>{{ .MiiId }}</p>
+            <p>{{ .Likes }}</p>
+            <p>{{ .PermLikes }}</p>
+            <p>{{ .MiiDataEncoded }}</p>
+        </div>
+        {{end}}
+    </main>
+</body>
+</html>
