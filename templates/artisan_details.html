@@ -137,8 +137,7 @@
                                 <p class="opacity-30 font-normal font-serif">{{.Initials}}</p>
                             </h1>
                             <div class="flex flex-row gap-3">
-                                <p class="gender">{{.Gender}}</p>
-                                |
+                                <p class="gender">{{.Gender}}</p> |
                                 <p class="country">{{.CountryId}}</p>
                             </div>
                         </div>
@@ -159,6 +158,10 @@
                     {{.EntryId}} | {{.MiiId}}
                     <i class="fa-solid fa-fingerprint"></i>
                 </p>
+            </div>
+            {{ else }}
+            <div class="flex justify-center items-center">
+                <p class="mt-3 text-xl opacity-60 text-center"><i class="fa-solid fa-triangle-exclamation text-6xl"></i><br><br>{{ .ArtisanDetails.Name }} has shared no Miis. Once they do, they will be displayed them here.</p>
             </div>
             {{ end }}
         </div>
