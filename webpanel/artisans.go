@@ -3,30 +3,28 @@ package webpanel
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"encoding/base64"
+	"time"
 )
 
 const (
-	GetArtisans = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id`
+	GetArtisans = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans ORDER BY artisan_id`
 )
 
 type Artisans struct {
-	EntryId int
 	ArtisanId int
-	Initials string
-	Nickname string
-	Gender int
+	Name string
 	CountryId int
 	WiiNumber int
-	MiiId []byte
-	Likes int
-	PermLikes int
+	MacAddress string
+	NumberOfPosts int
+	TotalLikes int
+	IsMaster bool
+	LastPost time.Time
 	MiiData []byte
-	MiiDataEncoded string
 }
 
 func (w *WebPanel) ViewArtisans(c *gin.Context) {
-	rows, err := w.Pool.Query(w.Ctx, GetPlaza)
+	rows, err := w.Pool.Query(w.Ctx, GetArtisans)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
@@ -34,24 +32,23 @@ func (w *WebPanel) ViewArtisans(c *gin.Context) {
 		return
 	}
 
-	var plaza []Plaza
+	var artisans []Artisans
 	for rows.Next() {
-		plazadata := Plaza{}
-		err = rows.Scan(&plazadata.EntryId, &plazadata.ArtisanId, &plazadata.Initials, &plazadata.Nickname, &plazadata.Gender, &plazadata.CountryId, &plazadata.WiiNumber, &plazadata.MiiId, &plazadata.Likes, &plazadata.PermLikes, &plazadata.MiiData)
+		artisan := Artisans{}
+		err = rows.Scan(&artisan.ArtisanId, &artisan.Name, &artisan.CountryId, &artisan.WiiNumber, &artisan.MacAddress, &artisan.NumberOfPosts, &artisan.TotalLikes, &artisan.IsMaster, &artisan.LastPost, &artisan.MiiData)
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 				"Error": err.Error(),
 			})
 			return
 		}
-		plazadata.MiiDataEncoded = base64.StdEncoding.EncodeToString(plazadata.MiiData)
 
-		plaza = append(plaza, plazadata)
+		artisans = append(artisans, artisan)
 	}
 
 	c.HTML(http.StatusOK, "view_artisans.html", gin.H{
-		"numberOfMiis": len(plaza),
-		"Plaza":         plaza,
+		"numberOfArtisans": len(artisans),
+		"Artisans":         artisans,
 
 	})
 }
