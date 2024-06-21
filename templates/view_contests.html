@@ -110,6 +110,8 @@
                     {{ end }}
                     {{ if .HasSpecialAward}}
                     |
+                    {{ else if .HasSouvenir}}
+                    |
                     {{end}}
                     <a href="/panel/contests/edit/{{ .ContestId }}" class="p-2 pl-4 pr-4 rounded-full text-white bg-blue-400 hover:bg-sky-70">
                         <button><i class="fa-solid fa-pen-to-square"></i></button>

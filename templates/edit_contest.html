@@ -41,6 +41,7 @@
   </head>
   <body class="dark:text-white dark:bg-slate-800">
     <main class="container py-20">
+      <p class="hidden" id="contestId">{{ .ContestInfo.ContestId }}</p>
       <!-- <div class="fixed">
         <p id="contestId">{{ .ContestInfo.ContestId }}</p>
         <p id="name">{{ .ContestInfo.Name }}</p>
@@ -166,6 +167,7 @@
         action="/panel/contests/edit/{{ .ContestInfo.ContestId }}"
         method="post"
         enctype="multipart/form-data"
+        id="editContestForm"
         class="col-start-1 col-span-full main_grid rounded-xl"
       >
         <div
@@ -221,6 +223,7 @@
           class="input col-start-4 col-span-3 p-2 border rounded-xl bg-neutral-100 dark:bg-slate-600 dark:border-slate-500"
         >
           <span>Thumbnail</span>
+          <input type="hidden" id="defaultImage" name="defaultImage" {{if .ContestInfo.HasThumbnail}}value="/assets/contest/{{ .ContestInfo.ContestId }}/thumbnail.jpg"{{end}}>
           <label
             class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 dark:text-black flex items-center justify-between gap-3"
             ><i class="fa-solid fa-circle-plus"></i>Add file
@@ -228,6 +231,7 @@
               type="file"
               name="thumbnail"
               type="image/png"
+              id="input1"
               class="hidden"
               onchange="previewImage(event, 'thumbnailPreview', 'thumbnailPreview2')"
             />
@@ -242,16 +246,18 @@
           class="input col-start-7 col-span-6 p-2 border rounded-xl bg-neutral-100 dark:bg-slate-600 dark:border-slate-500"
         >
           <span>Souvenir</span>
+          <input type="hidden" id="defaultImage2" name="defaultImage" {{if .ContestInfo.HasSouvenir}}value="/assets/contest/{{ .ContestInfo.ContestId }}/souvenir.jpg"{{end}}}>
           <label
             class="bg-white cursor-pointer p-4 rounded-lg transition-all hover:bg-gray-200 dark:text-black flex items-center justify-between gap-3"
             ><i class="fa-solid fa-circle-plus"></i>Add file
             <input
-              type="file"
-              name="souvenir"
-              type="image/png"
-              class="hidden"
-              onchange="previewImage(event, 'souvenirPreview', 'souvenirPreview2')"
-            />
+            type="file"
+            name="souvenir"
+            type="image/png"
+            id="input2"
+            class="hidden"
+            onchange="previewImage(event, 'souvenirPreview', 'souvenirPreview2')"
+          />
             <img
               id="souvenirPreview"
               class="w-5 scale-150 rounded-md hidden shadow-md rotate-3 {{if .ContestInfo.HasThumbnail}}!block{{end}}"
@@ -273,6 +279,76 @@
   </body>
 
   <script>
+    document.getElementById('editContestForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent the default form submission
+
+      var formData = new FormData(this);
+      var contestIdElement = document.getElementById('contestId');
+      var contestId = contestIdElement.textContent;
+
+      var defaultImageElement = document.getElementById('defaultImage');
+      var defaultImageLink = defaultImageElement.value;
+
+      var souvenirImageElement = document.getElementById('defaultImage2');
+      var souvenirImageLink = souvenirImageElement.value;
+
+      var input1 = document.getElementById('input1');
+      var input2 = document.getElementById('input2');
+
+      var processImage = function(imageLink, inputElement, formDataKey) {
+        return new Promise((resolve, reject) => {
+          if (!inputElement.value) {
+            fetch(imageLink)
+              .then(response => response.blob())
+              .then(blob => {
+                var filename = imageLink.split('/').pop(); // Extract filename from URL
+                var newFile = new File([blob], filename, {type: blob.type});
+                formData.append(formDataKey, newFile);
+                resolve();
+              })
+              .catch(error => {
+                console.error('Error fetching the image:', error);
+                reject(error);
+              });
+          } else {
+            resolve();
+          }
+        });
+      };
+
+      Promise.all([
+        processImage(defaultImageLink, input1, 'thumbnail'),
+        processImage(souvenirImageLink, input2, 'souvenir')
+      ]).then(() => {
+        for (var pair of formData.entries()) {
+          console.log(pair[0]+ ': ' + pair[1]);
+        }
+        submitForm(formData, contestId);
+      }).catch(error => {
+        console.error('Error processing images:', error);
+      });
+    });
+
+    function submitForm(formData, contestId) {
+      const actionUrl = `/panel/contests/edit/${contestId}`;
+
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Form submitted successfully');
+          window.location.href = '/panel/contests';
+        } else {
+          console.error('Submission failed');
+        }
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+    }
+
     function previewImage(event, id, id2) {
       const reader = new FileReader();
       reader.onload = function () {
@@ -291,6 +367,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
+
       const ids = ["toggleOpen"];
       ids.forEach((id) => {
         const element = document.getElementById(id);
