@@ -9,6 +9,7 @@ import (
 const (
 	GetPlaza = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id`
 	DeleteMii = `DELETE FROM miis WHERE entry_id = $1`
+	GetMiiDetails = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE entry_id = $1`
 )
 
 type Plaza struct {
@@ -54,6 +55,26 @@ func (w *WebPanel) ViewPlaza(c *gin.Context) {
 		"numberOfMiis": len(plaza),
 		"Plaza":         plaza,
 
+	})
+}
+
+func (w *WebPanel) ViewMiiDetails(c *gin.Context) {
+	entryId := c.Param("entry_id")
+	row := w.Pool.QueryRow(w.Ctx, GetMiiDetails, entryId)
+
+	MiiDetails := Plaza{}
+	err := row.Scan(&MiiDetails.EntryId, &MiiDetails.ArtisanId, &MiiDetails.Initials, &MiiDetails.Nickname, &MiiDetails.Gender, &MiiDetails.CountryId, &MiiDetails.WiiNumber, &MiiDetails.MiiId, &MiiDetails.Likes, &MiiDetails.PermLikes, &MiiDetails.MiiData)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	MiiDetails.MiiDataEncoded = base64.StdEncoding.EncodeToString(MiiDetails.MiiData)
+
+	c.HTML(http.StatusOK, "view_mii.html", gin.H{
+		"MiiDetails": MiiDetails,
 	})
 }
 
