@@ -28,11 +28,24 @@
       sizes="16x16"
       href="https://www.wiilink24.com/img/favicon-16x16.png"
     />
-    <link rel="manifest" href="https://www.wiilink24.com/img/site.webmanifest" />
-    <link rel="mask-icon" href="https://www.wiilink24.com/img/safari-pinned-tab.svg" color="#5bbad5" />
-    <link rel="shortcut icon" href="https://www.wiilink24.com/img/favicon.ico" />
+    <link
+      rel="manifest"
+      href="https://www.wiilink24.com/img/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://www.wiilink24.com/img/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://www.wiilink24.com/img/favicon.ico"
+    />
     <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-config" content="https://www.wiilink24.com/img/browserconfig.xml" />
+    <meta
+      name="msapplication-config"
+      content="https://www.wiilink24.com/img/browserconfig.xml"
+    />
     <meta name="theme-color" content="#ffffff" />
     <script
       src="https://kit.fontawesome.com/e47ece3e74.js"
@@ -128,19 +141,19 @@
                       {{ .ArtisanId }}
                     </p>
                   </h1>
-                  <div class="flex flex-row gap-3">
-                    <p class="">{{ .IsMaster }}</p>
-                    |
+                  <div class="pt-2 flex flex-row">
+                    <p class="master">{{ .IsMaster }}</p>
                     <p class="country">{{ .CountryId }}</p>
                   </div>
                 </div>
               </a>
             </div>
-            <div class="mr-6 flex flex-row gap-3">
-              <p class="text-xl">
-                <i class="fa-solid fa-angle-up"></i> {{ .TotalLikes }} | <i
-                  class="fa-solid fa-users"
-                ></i>
+            <div class="mr-6 flex flex-col gap-3">
+              <p class="text-xl text-right">
+                <i class="fa-solid fa-angle-up"></i> {{ .TotalLikes }}
+              </p>
+              <p class="text-xl text-right">
+                <i class="fa-solid fa-users"></i>
                 {{ .NumberOfPosts }}
               </p>
             </div>
@@ -165,18 +178,26 @@
 
   <script>
     function deleteEntry(entryId) {
-      fetch(`/panel/plaza/delete/${entryId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((response) => {
-        if (response.ok) {
-          window.location.reload();
-        } else {
-          alert("Failed to delete entry.");
-        }
-      });
+      // Ask for confirmation
+      const isConfirmed = confirm(
+        "Are you sure you want to delete this Mii Artisan? This action cannot be undone."
+      );
+
+      // Proceed only if the user confirmed
+      if (isConfirmed) {
+        fetch(`/panel/artisans/delete/${entryId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            alert("Failed to delete entry.");
+          }
+        });
+      }
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -214,6 +235,14 @@
           const countryName = getCountryName(countryCode);
           countryElement.innerHTML = countryName.flag + " " + countryName.name;
         }
+      });
+
+      const masterElements = document.querySelectorAll(".master");
+      masterElements.forEach((masterElement) => {
+        const isMaster = masterElement.innerHTML;
+        const masterName = checkIsMaster(isMaster);
+        masterElement.innerHTML = masterName;
+        console.log(masterName);
       });
 
       const genderElements = document.querySelectorAll(".gender");
@@ -275,6 +304,15 @@
           return "<i class='fa-solid fa-person-dress'></i>";
         case 3:
           return "<i class='fa-solid fa-circle-question'></i>";
+      }
+    }
+
+    function checkIsMaster(isMaster) {
+      console.log(isMaster);
+      if (isMaster == "true") {
+        return "<span class='mr-3 p-1 pl-2 pr-2 rounded-full text-white' style='background-color:orange;'>◆ Master ◆</span>";
+      } else {
+        return "";
       }
     }
 

@@ -28,11 +28,24 @@
       sizes="16x16"
       href="https://www.wiilink24.com/img/favicon-16x16.png"
     />
-    <link rel="manifest" href="https://www.wiilink24.com/img/site.webmanifest" />
-    <link rel="mask-icon" href="https://www.wiilink24.com/img/safari-pinned-tab.svg" color="#5bbad5" />
-    <link rel="shortcut icon" href="https://www.wiilink24.com/img/favicon.ico" />
+    <link
+      rel="manifest"
+      href="https://www.wiilink24.com/img/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://www.wiilink24.com/img/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://www.wiilink24.com/img/favicon.ico"
+    />
     <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-config" content="https://www.wiilink24.com/img/browserconfig.xml" />
+    <meta
+      name="msapplication-config"
+      content="https://www.wiilink24.com/img/browserconfig.xml"
+    />
     <meta name="theme-color" content="#ffffff" />
     <script
       src="https://kit.fontawesome.com/e47ece3e74.js"
@@ -177,18 +190,26 @@
 
   <script>
     function deleteEntry(entryId) {
-      fetch(`/panel/plaza/delete/${entryId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((response) => {
-        if (response.ok) {
-          window.location.reload();
-        } else {
-          alert("Failed to delete entry.");
-        }
-      });
+      // Ask for confirmation
+      const isConfirmed = confirm(
+        "Are you sure you want to delete this Mii? This action cannot be undone."
+      );
+
+      // Proceed only if the user confirmed
+      if (isConfirmed) {
+        fetch(`/panel/plaza/delete/${entryId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            alert("Failed to delete entry.");
+          }
+        });
+      }
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
