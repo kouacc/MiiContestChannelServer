@@ -20,7 +20,7 @@ const (
 	GetOneContest = `SELECT contest_id, english_name, status, has_souvenir, has_thumbnail, has_special_award, open_time, close_time FROM contests WHERE contest_id = $1`
 	DeleteContest = `DELETE FROM contests WHERE contest_id = $1`
 	DeleteContestEntries = `DELETE FROM contest_miis WHERE contest_id = $1`
-	UpdateContest = `UPDATE contests SET english_name = $1, open_time = $2, has_special_award = $3, has_thumbnail = $4, has_souvenir = $5 WHERE contest_id = $6`
+	UpdateContest = `UPDATE contests SET english_name = $1, open_time = $2, close_time = $3, has_special_award = $4, has_thumbnail = $5, has_souvenir = $6 WHERE contest_id = $7`
 )
 
 type Contests struct {
@@ -271,7 +271,7 @@ func (w *WebPanel) EditContestPOST(c *gin.Context) {
 	}
 
 	//update the contest 
-	_, err = w.Pool.Exec(w.Ctx, UpdateContest, name, openTime.AddDate(0, 0, 7), specialAward, hasThumbnail, hasSouvenir, strContestId)
+	_, err = w.Pool.Exec(w.Ctx, UpdateContest, name, openTime, openTime.AddDate(0, 0, 7), specialAward, hasThumbnail, hasSouvenir, strContestId)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "edit_contest.html", gin.H{
 			"Error": err.Error(),
