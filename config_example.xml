@@ -15,11 +15,8 @@
     <oidc>
         <clientID>clientID</clientID>
         <clientSecret>clientSecret</clientSecret>
-        <redirectURI>http://localhost:9011/auth</redirectURI>
-        <endpoint>
-            <authURL>https://accounts.google.com/o/oauth2/auth</authURL>
-            <tokenURL>https://accounts.google.com/o/oauth2/token</tokenURL>
-        </endpoint>
-        <state>help-me</state>
+        <redirectURI>http://localhost:9011/panel/authorize</redirectURI>
+        <scopes>openid profile</scopes>
+        <provider>provider</provider>
     </oidc>
 </Config>
