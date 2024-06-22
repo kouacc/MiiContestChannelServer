@@ -5,11 +5,14 @@ import (
 	"MiiContestChannelServer/webpanel"
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/coreos/go-oidc/v3/oidc"
+	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v4/pgxpool"
+	"golang.org/x/oauth2"
 )
 
 var (
@@ -26,6 +29,23 @@ func checkError(err error) {
 func main() {
 	// Get config
 	config := GetConfig()
+
+	provider, err := oidc.NewProvider(ctx, config.OIDCConfig.Provider)
+	if err != nil {
+		log.Fatalf("Failed to create OIDC provider: %v", err)
+	}
+	
+	
+	AuthConfig := &webpanel.AppAuthConfig{
+		OAuth2Config: &oauth2.Config{
+			ClientID:     config.OIDCConfig.ClientID,
+			ClientSecret: config.OIDCConfig.ClientSecret,
+			RedirectURL:  config.OIDCConfig.RedirectURL,
+			Scopes:       config.OIDCConfig.Scopes,
+			Endpoint:     provider.Endpoint(),
+		},
+		Provider: provider,
+	}
 
 	// Start SQL
 	dbString := fmt.Sprintf("postgres://%s:%s@%s/%s", config.Username, config.Password, config.DatabaseAddress, config.DatabaseName)
@@ -53,7 +73,8 @@ func main() {
 	}
 
 	r.GET("/panel/login", panel.LoginPage)
-	r.POST("/panel/login", panel.Login)
+	r.POST("/panel/start", panel.StartPanelHandler)
+	/* r.POST("/panel/authorize", panel.Login) */
 
 	auth := r.Group("/panel")
 	auth.Use(middleware.AuthenticationMiddleware())
