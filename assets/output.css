@@ -1120,6 +1120,11 @@ h1 {
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
+.bg-green-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 252 231 / var(--tw-bg-opacity));
+}
+
 .bg-\[url\(\'https\:\/\/rc24\.xyz\/goodies\/wallpapers\/CMO_Channel_BG_orange_1600x900\.png\'\)\] {
   background-image: url('https://rc24.xyz/goodies/wallpapers/CMO_Channel_BG_orange_1600x900.png');
 }
@@ -1219,6 +1224,10 @@ h1 {
   padding-top: 1.5rem;
 }
 
+.pt-8 {
+  padding-top: 2rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1299,6 +1308,21 @@ h1 {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity));
+}
+
+.text-green-400 {
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity));
+}
+
+.text-green-500 {
+  --tw-text-opacity: 1;
+  color: rgb(34 197 94 / var(--tw-text-opacity));
 }
 
 .underline {
