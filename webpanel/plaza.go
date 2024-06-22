@@ -11,6 +11,7 @@ const (
 	DeleteMii = `DELETE FROM miis WHERE entry_id = $1`
 	GetMiiDetails = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE entry_id = $1`
 	GetArtisanInfo = `SELECT name FROM artisans where artisan_id = $1`
+	SearchMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE nickname LIKE $1 ORDER BY entry_id`
 )
 
 type Plaza struct {
@@ -116,4 +117,35 @@ func (w *WebPanel) DeleteMii(c *gin.Context) {
 	}
 
 	c.Redirect(http.StatusFound, "/panel/plaza")
+}
+
+func (w *WebPanel) SearchPlaza(c *gin.Context) {
+	search := c.PostForm("search")
+
+	rows, err := w.Pool.Query(w.Ctx, SearchMiis, search)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	var SearchResults []Plaza
+	for rows.Next() {
+		search := Plaza{}
+		err = rows.Scan(&search.EntryId, &search.ArtisanId, &search.Initials, &search.Nickname, &search.Gender, &search.CountryId, &search.WiiNumber, &search.MiiId, &search.Likes, &search.PermLikes, &search.MiiData)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		search.MiiDataEncoded = base64.StdEncoding.EncodeToString(search.MiiData)
+
+		SearchResults = append(SearchResults, search)
+	}
+
+	c.HTML(http.StatusOK, "search_results.html", gin.H{
+		"SearchResults": SearchResults,
+	})
 }
