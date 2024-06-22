@@ -61,39 +61,11 @@
       <!-- {{if .Error}}
         <p style="color:red;">{{.Error}}</p>
         {{end}} -->
-      <form
-        action="/panel/login"
-        method="post"
-        class="mt-2 pt-6 flex flex-col gap-2 w-full border-t-2 border-black/10"
-      >
-        <div class="input">
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-4 rounded-t-2xl rounded-b-lg"
-          />
-        </div>
-        <div class="input">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            class="bg-neutral-100 border dark:border-slate-600 dark:bg-slate-700 p-4 rounded-b-2xl rounded-t-lg"
-          />
-        </div>
-        <p class="opacity-50 text-right mt-3">
-          <i class="fa-solid fa-triangle-exclamation"></i> You must be logged in
-          to access this tool.
-        </p>
-        <br />
-        <input
-          type="submit"
-          value="Login"
-          class="submit_button p-[18px]"
-
-        />
-      </form>
+      <a href="#">
+        <button class="submit_button">
+          Login with WiiLink Internal
+        </button>
+      </a>
     </main>
   </body>
 </html>

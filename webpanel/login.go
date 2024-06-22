@@ -1,62 +1,87 @@
 package webpanel
 
 import (
-	"crypto/sha512"
-	"encoding/hex"
-	"fmt"
+	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"net/http"
-	"time"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
-const QueryUser = `SELECT password FROM panel_user WHERE username = $1`
+var (
+	oauth2State  string
+	oauth2Config *oauth2.Config
+)
+
+func init() {
+	oauth2Config = &oauth2.Config{
+		ClientID:     "your-client-id",
+		ClientSecret: "your-client-secret",
+		RedirectURL:  "http://localhost:8080/auth/callback",
+		Scopes:       []string{"openid", "profile", "email"},
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  "https://your-authentik-instance/authorize",
+			TokenURL: "https://your-authentik-instance/token",
+		},
+	}
+	oauth2State = "help-me"
+}
+	
 
 func (w *WebPanel) LoginPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "login.html", nil)
 }
 
 func (w *WebPanel) Login(c *gin.Context) {
-	username := c.PostForm("username")
-	password := c.PostForm("password")
+	url := oauth2Config.AuthCodeURL(oauth2State)
+	c.Redirect(http.StatusTemporaryRedirect, url)
+}
 
-	var expectedHash string
-	err := w.Pool.QueryRow(w.Ctx, QueryUser, username).Scan(&expectedHash)
+func (w *WebPanel) AuthCallback(c *gin.Context) {
+	state := c.Query("state")
+	if state != oauth2State {
+		c.HTML(http.StatusBadRequest, "login.html", gin.H{
+			"Error": "Invalid state parameter",
+		})
+		return
+	}
+
+	code := c.Query("code")
+	token, err := oauth2Config.Exchange(context.Background(), code)
 	if err != nil {
 		c.HTML(http.StatusUnauthorized, "login.html", gin.H{
-			"Error": "Database error",
+			"Error": "Failed to exchange token",
 		})
 		return
 	}
 
-	hashBytes := sha512.Sum512(append(w.Salt, []byte(password)...))
-	fmt.Println(hex.EncodeToString(hashBytes[:]))
-	if hex.EncodeToString(hashBytes[:]) != expectedHash {
-		c.HTML(http.StatusUnauthorized, "login.html", gin.H{
-			"Error": "Authentication failed",
+	idToken, ok := token.Extra("id_token").(string)
+	if !ok {
+		c.HTML(http.StatusInternalServerError, "login.html", gin.H{
+			"Error": "No id_token field in oauth2 token",
 		})
 		return
 	}
 
-	// Now that we know the user is valid, generate a JWT.
-	claims := &JWTClaims{
-		Username: username,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour)),
-		},
-	}
-
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte("help me"))
+	// Parse the ID Token to get user information
+	claims := &JWTClaims{}
+	_, err = jwt.ParseWithClaims(idToken, claims, func(token *jwt.Token) (interface{}, error) {
+		// Use the public key of your Authentik instance to verify the token
+		return []byte("your-public-key"), nil
+	})
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "login.html", gin.H{
-			"Error": "Failed to create JWT",
+			"Error": "Failed to parse ID token",
 		})
 		return
 	}
 
-	c.SetCookie("token", token, 3600, "", "", false, true)
+	// Use the claims to get user information and create a session
+	c.SetCookie("token", idToken, 3600, "", "", false, true)
 	c.Redirect(http.StatusMovedPermanently, "/panel/contests")
 }
+
 
 func (w *WebPanel) AdminPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "admin.html", nil)

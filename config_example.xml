@@ -10,4 +10,16 @@
     <databaseAddress>127.0.0.1</databaseAddress>
     <databaseName>cmoc</databaseName>
     <assetsPath>mc-assets</assetsPath>
+
+    <!-- OIDC credentials/data -->
+    <oidc>
+        <clientID>clientID</clientID>
+        <clientSecret>clientSecret</clientSecret>
+        <redirectURI>http://localhost:9011/auth</redirectURI>
+        <endpoint>
+            <authURL>https://accounts.google.com/o/oauth2/auth</authURL>
+            <tokenURL>https://accounts.google.com/o/oauth2/token</tokenURL>
+        </endpoint>
+        <state>help-me</state>
+    </oidc>
 </Config>
