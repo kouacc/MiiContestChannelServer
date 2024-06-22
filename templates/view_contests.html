@@ -21,6 +21,9 @@
     <script src="https://kit.fontawesome.com/e47ece3e74.js" crossorigin="anonymous"></script>
   </head>
   <body class="dark:text-white dark:bg-slate-800">
+    <div id="msg" class="m-2 p-8 right-0 opacity-100 rounded-lg fixed z-10 hidden transition-all">
+
+    </div>
     <main class="container py-20 space-y-4">
         <div class=" pb-2 flex items-center justify-between">
             <div class="flex flex-row gap-3 items-center">
@@ -234,6 +237,43 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+            const hash = window.location.hash;
+            const msgElement = document.getElementById('msg');
+
+            if (msgElement) {
+                let message = '';
+                let showMessage = false;
+
+                switch (hash) {
+                    case '#edit_success':
+                    msgElement.classList.add("bg-green-400");
+                        message = '<b><i class="fa-solid fa-circle-check"></i> Saved!</b><br>The Contest has been modified successfully!';
+                        showMessage = true;
+                        break;
+                    case '#add_success':
+                    msgElement.classList.add("bg-green-400");
+                        message = '<b><i class="fa-solid fa-circle-check"></i> Added!</b><br>The Contest has been added successfully!';
+                        showMessage = true;
+                        break;
+                    case '#delete_success':
+                    msgElement.classList.add("bg-red-400");
+                        message = '<b><i class="fa-solid fa-circle-check"></i> Deleted!</b><br>The Contest has been deleted successfully!';
+                        showMessage = true;
+                        break;
+                }
+
+                if (showMessage) {
+                    console.log("Shown");
+                    msgElement.style.display = 'block';
+                    msgElement.innerHTML = message;
+                    setTimeout(() => {
+                        msgElement.style.opacity = '0';
+                        msgElement.style.pointerEvents = 'none';
+                    }, 5000);
+                }
+            }
+
         const tabs = document.querySelectorAll('button[data-tabs-target]');
         const tabPanels = document.querySelectorAll('[role="tabpanel"]');
 

@@ -116,7 +116,7 @@ func (w *WebPanel) DeleteMii(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/panel/plaza")
+	c.Redirect(http.StatusFound, "/panel/plaza#delete_success")
 }
 
 func (w *WebPanel) SearchPlaza(c *gin.Context) {
