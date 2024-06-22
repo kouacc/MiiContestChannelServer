@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/jwt"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -68,7 +67,7 @@ func (w *WebPanel) AuthCallback(c *gin.Context) {
 	claims := &JWTClaims{}
 	_, err = jwt.ParseWithClaims(idToken, claims, func(token *jwt.Token) (interface{}, error) {
 		// Use the public key of your Authentik instance to verify the token
-		return []byte("your-public-key"), nil
+		return []byte("help me"), nil
 	})
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "login.html", gin.H{
