@@ -68,6 +68,9 @@ func main() {
 		auth.POST("/contests/delete/:contest_id", panel.DeleteContest)
 		auth.GET("/contests/edit/:contest_id", panel.EditContest)
 		auth.POST("/contests/edit/:contest_id", panel.EditContestPOST)
+		auth.GET("/plaza", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, "/panel/plaza/1")
+		})
 		auth.GET("/plaza/:page", panel.ViewPlaza)
 		auth.GET("/plaza/top", panel.ViewPlazaTop50)
 		auth.GET("/plaza/new", panel.ViewPlazaNew)
@@ -75,6 +78,9 @@ func main() {
 		auth.POST("/plaza/search", panel.SearchPlaza)
 		auth.GET("/plaza/details/:entry_id", panel.ViewMiiDetails)
 		auth.POST("/plaza/delete/:entry_id", panel.DeleteMii)
+		auth.GET("/artisans", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, "/panel/artisans/1")
+		})
 		auth.GET("/artisans/:page", panel.ViewArtisans)
 		auth.POST("/artisans/search", panel.SearchArtisans)
 		auth.GET("/artisans/details/:artisan_id", panel.ViewArtisanDetails)
