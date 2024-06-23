@@ -129,6 +129,7 @@
               placeholder="There are {{ .numberOfMiis }} Miis in the Plaza..."
               class="p-3 bg-gray-200 dark:bg-slate-500 hover:bg-gray-300 dark:hover:bg-slate-600 focus:bg-gray-300 dark:focus:bg-slate-700 transition-all relative"
               style="border-radius: 18px 4px 4px 18px"
+              required
             />
             <button
               type="submit"
@@ -232,7 +233,7 @@
         </div>
         {{end}}
       </div>
-      <div class="pt-3 pb-6 flex flex-row items-center justify-between">
+      <div id="pagination" class="pt-3 pb-6 flex flex-row items-center justify-between">
         <p class="opacity-60">
           Showing page <b id="pageNumber"></b> of <b>{{ .Pages }}</b>.
         </p>
@@ -296,25 +297,38 @@
         }
 
         const urlParts = window.location.pathname.split("/");
-        const pageNumberIndex =
-          urlParts.findIndex((part) => part === "plaza") + 1;
-        const pageNumber =
-          pageNumberIndex < urlParts.length ? urlParts[pageNumberIndex] : 1;
+        console.log(urlParts);
+        const pageNumber = urlParts[urlParts.length - 1];
         document.getElementById("pageNumber").textContent = pageNumber;
+        console.log(pageNumber);
+
+        if (isNaN(parseInt(pageNumber))) {
+          document.getElementById("pagination").style.display = "none";
+        }
 
         if (pageNumber > 1) {
-          document.getElementById("prevPage").href = `/panel/plaza/${
-            parseInt(pageNumber) - 1
-          }`;
+          const urlParts = window.location.pathname.split('/');
+          const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and get the last part as the current page number
+          const newPageNumber = currentPageNumber - 1; // For previous page, decrement the current page number
+
+          // Join the parts back together and append the new page number
+          const newUrl = `${urlParts.join('/')}/${newPageNumber}`;
+
+          document.getElementById("prevPage").href = newUrl;
         } else {
           document.getElementById("prevPage").style.opacity = "0.3";
           document.getElementById("prevPage").style.pointerEvents = "none";
         }
 
         if (pageNumber < document.getElementById("pages").textContent) {
-          document.getElementById("nextPage").href = `/panel/plaza/${
-            parseInt(pageNumber) + 1
-          }`;
+          const urlParts = window.location.pathname.split('/');
+          const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and get the last part as the current page number
+          const newPageNumber = currentPageNumber + 1; // For next page, increase the current page number
+
+          // Join the parts back together and append the new page number
+          const newUrl = `${urlParts.join('/')}/${newPageNumber}`;
+
+          document.getElementById("prevPage").href = newUrl;
         } else {
           document.getElementById("nextPage").style.opacity = "0.3";
           document.getElementById("nextPage").style.pointerEvents = "none";
@@ -341,7 +355,6 @@
 
         document.getElementById("currentFilter").innerHTML = iconHtml;
 
-        document.getElementById("currentFilter").innerHTML = iconHtml;
 
         const ids = ["toggleOpen"];
         ids.forEach((id) => {

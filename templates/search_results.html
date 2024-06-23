@@ -114,8 +114,8 @@
       </div>
       <div class="flex items-center justify-between">
         <h1>Search Results</h1>
-        <form action="/panel/plaza/search" method="post" enctype="multipart/form-data">
-          <input type="text" name="search" placeholder="Search..." class="p-3 bg-gray-200 dark:bg-slate-500 hover:bg-gray-300 dark:hover:bg-slate-600 focus:bg-gray-300 dark:focus:bg-slate-700 transition-all relative" style="border-radius:18px 4px 4px 18px;"/>
+        <form id="searchForm" action="/panel/plaza/search" method="post" enctype="multipart/form-data">
+          <input type="text" name="search" placeholder="Search..." class="p-3 bg-gray-200 dark:bg-slate-500 hover:bg-gray-300 dark:hover:bg-slate-600 focus:bg-gray-300 dark:focus:bg-slate-700 transition-all relative" style="border-radius:18px 4px 4px 18px;" required/>
           <button type="submit" class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all" style="border-radius:4px 18px 18px 4px;">
             <i class="fas fa-search"></i>
           </button>
@@ -216,6 +216,15 @@
       }
   
       document.addEventListener("DOMContentLoaded", async function () {
+        const urlPath = window.location.pathname;
+            const formElement = document.getElementById("searchForm");
+            
+            if (urlPath.includes("/panel/artisans/search")) {
+              formElement.action = "/panel/artisans/search";
+            } else if (urlPath.includes("/panel/plaza/search")) {
+              formElement.action = "/panel/plaza/search";
+            }
+
         const miiElements = document.querySelectorAll(".miiData"); // Select all elements with the class 'miiData'
         miiElements.forEach(async (miiElement) => {
           const base64String = miiElement.innerHTML; // Assuming the base64 string is directly within the element

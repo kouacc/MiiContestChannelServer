@@ -73,7 +73,9 @@ func main() {
 		})
 		auth.GET("/plaza/:page", panel.ViewPlaza)
 		auth.GET("/plaza/top", panel.ViewPlazaTop50)
-		auth.GET("/plaza/new", panel.ViewPlazaNew)
+		auth.GET("/plaza/new", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, "/panel/plaza/new/1")
+		})
 		auth.GET("/plaza/new/:page", panel.ViewPlazaNew)
 		auth.POST("/plaza/search", panel.SearchPlaza)
 		auth.GET("/plaza/details/:entry_id", panel.ViewMiiDetails)
