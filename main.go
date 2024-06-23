@@ -74,7 +74,7 @@ func main() {
 
 	r.GET("/panel/login", panel.LoginPage)
 	r.GET("/panel/start", panel.StartPanelHandler)
-	r.POST("/panel/authorize", panel.FinishPanelHandler)
+	r.GET("/panel/authorize", panel.FinishPanelHandler)
 
 	auth := r.Group("/panel")
 	auth.Use(middleware.AuthenticationMiddleware())

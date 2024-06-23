@@ -3,12 +3,12 @@ package webpanel
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"encoding/json"
 	"io"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/oauth2"
 )
 
@@ -72,7 +72,13 @@ func (w *WebPanel) FinishPanelHandler(c *gin.Context) {
 		return
 	}
 
-	resp := struct {
+	userInfo, err := w.AuthConfig.Provider.UserInfo(c, oauth2.StaticTokenSource(oauth2Token))
+		if err != nil {
+			http.Error(c.Writer, "Failed to get userinfo: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+	/* resp := struct {
 			OAuth2Token *oauth2.Token
 		}{oauth2Token}
 		data, err := json.MarshalIndent(resp, "", "    ")
@@ -82,16 +88,29 @@ func (w *WebPanel) FinishPanelHandler(c *gin.Context) {
 			})
 			return
 		}
-		c.Writer.Write(data)
+		c.Writer.Write(data) */
 
+	//Now that we verified the token, create a JWT token to use with the middleware
+	claims := &JWTClaims{
+		Username: userInfo.Profile,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour)),
+		},
+	}
 
-	//1. verify state and errors
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte("help me"))
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "login.html", gin.H{
+			"Error": "Failed to create JWT",
+		})
+		return
+	}
 
-	//2. extract token id from token
-	//3. verify token
-	//4.? extract claims from token
-	//5. generate JWT token
-	//6. set JWT token in cookie
+	c.SetCookie("token", token, 3600, "", "", false, true)
+
+	//redirect to admin page
+	c.Redirect(http.StatusMovedPermanently, "/panel/contests")
+
 }
 
 
