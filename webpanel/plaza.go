@@ -14,7 +14,7 @@ const (
 	DeleteMii = `DELETE FROM miis WHERE entry_id = $1`
 	GetMiiDetails = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE entry_id = $1`
 	GetArtisanInfo = `SELECT name FROM artisans where artisan_id = $1`
-	SearchMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE nickname LIKE '%' || $1 || '%' ORDER BY entry_id`
+	SearchMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE nickname ILIKE '%' || $1 || '%' ORDER BY entry_id`
 	GetPlazaTop50 = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY likes DESC LIMIT 50`
 	GetPlazaNew = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id DESC`
 )
@@ -42,7 +42,7 @@ func (w *WebPanel) ViewPlaza(c *gin.Context) {
 		page = 1
 	}
 
-	const itemsPerPage = 50
+	const itemsPerPage = 150
 	offset := (page - 1) * itemsPerPage
 
 	query := GetPlaza + " LIMIT $1 OFFSET $2"
@@ -151,7 +151,7 @@ func (w *WebPanel) ViewPlazaNew(c *gin.Context) {
 		page = 1
 	}
 
-	const itemsPerPage = 50
+	const itemsPerPage = 150
 	offset := (page - 1) * itemsPerPage
 
 	query := GetPlazaNew + " LIMIT $1 OFFSET $2"

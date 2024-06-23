@@ -13,7 +13,7 @@ const (
 	GetArtisans = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans ORDER BY artisan_id`
 	GetArtisanDetails = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans WHERE artisan_id = $1`
 	GetArtisansMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE artisan_id = $1` 
-	SearchArtisans = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans WHERE name LIKE '%' || $1 || '%' ORDER BY artisan_id`
+	SearchArtisans = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans WHERE name ILIKE '%' || $1 || '%' ORDER BY artisan_id`
 )
 
 type Artisans struct {
@@ -37,7 +37,7 @@ func (w *WebPanel) ViewArtisans(c *gin.Context) {
 		page = 1
 	}
 
-	const itemsPerPage = 50
+	const itemsPerPage = 150
 	offset := (page - 1) * itemsPerPage
 
 	query := GetArtisans + " LIMIT $1 OFFSET $2"
