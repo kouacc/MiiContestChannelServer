@@ -1,9 +1,11 @@
 package webpanel
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
 	"encoding/base64"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -11,7 +13,7 @@ const (
 	DeleteMii = `DELETE FROM miis WHERE entry_id = $1`
 	GetMiiDetails = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE entry_id = $1`
 	GetArtisanInfo = `SELECT name FROM artisans where artisan_id = $1`
-	SearchMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE nickname ILIKE '%' || $1 || '%' ORDER BY entry_id`
+	SearchMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE nickname LIKE '%' || $1 || '%' ORDER BY entry_id`
 	GetPlazaTop50 = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY likes DESC LIMIT 50`
 	GetPlazaNew = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id DESC`
 )
@@ -33,7 +35,18 @@ type Plaza struct {
 }
 
 func (w *WebPanel) ViewPlaza(c *gin.Context) {
-	rows, err := w.Pool.Query(w.Ctx, GetPlaza)
+	pageStr := c.Param("page")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 0 {
+		page = 1
+	}
+
+	const itemsPerPage = 50
+	offset := (page - 1) * itemsPerPage
+
+	query := GetPlaza + " LIMIT $1 OFFSET $2"
+
+	rows, err := w.Pool.Query(w.Ctx, query, itemsPerPage, offset)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
@@ -120,7 +133,18 @@ func (w *WebPanel) ViewPlazaTop50(c *gin.Context) {
 }
 
 func (w *WebPanel) ViewPlazaNew(c *gin.Context) {
-	rows, err := w.Pool.Query(w.Ctx, GetPlazaNew)
+	pageStr := c.Param("page")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 0 {
+		page = 1
+	}
+
+	const itemsPerPage = 50
+	offset := (page - 1) * itemsPerPage
+
+	query := GetPlazaNew + " LIMIT $1 OFFSET $2"
+
+	rows, err := w.Pool.Query(w.Ctx, query, itemsPerPage, offset)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
@@ -235,5 +259,6 @@ func (w *WebPanel) SearchPlaza(c *gin.Context) {
 	c.HTML(http.StatusOK, "search_results.html", gin.H{
 		"SearchResults": SearchResults,
 		"SearchTerm":	 search,
+		"SearchType":    "Plaza",
 	})
 }

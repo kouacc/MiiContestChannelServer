@@ -1,16 +1,19 @@
 package webpanel
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
-	"time"
 	"encoding/base64"
+	"net/http"
+	"strconv"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
 	GetArtisans = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans ORDER BY artisan_id`
 	GetArtisanDetails = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans WHERE artisan_id = $1`
 	GetArtisansMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE artisan_id = $1` 
+	SearchArtisans = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans WHERE name LIKE '%' || $1 || '%' ORDER BY artisan_id`
 )
 
 type Artisans struct {
@@ -28,7 +31,18 @@ type Artisans struct {
 }
 
 func (w *WebPanel) ViewArtisans(c *gin.Context) {
-	rows, err := w.Pool.Query(w.Ctx, GetArtisans)
+	pageStr := c.Param("page")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 0 {
+		page = 1
+	}
+
+	const itemsPerPage = 50
+	offset := (page - 1) * itemsPerPage
+
+	query := GetArtisans + " LIMIT $1 OFFSET $2"
+
+	rows, err := w.Pool.Query(w.Ctx, query, itemsPerPage, offset)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
@@ -103,5 +117,38 @@ func (w *WebPanel) ViewArtisanDetails(c *gin.Context) {
 		"ArtisanDetails": artisanDetails,
 		"numberOfMiis": len(Miis),
 		"Miis":         Miis,
+	})
+}
+
+func (w *WebPanel) SearchArtisans(c *gin.Context) {
+	search := c.PostForm("search")
+
+	rows, err := w.Pool.Query(w.Ctx, SearchMiis, search)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	var SearchResults []Artisans
+	for rows.Next() {
+		search := Artisans{}
+		err = rows.Scan(&search.ArtisanId, &search.Name, &search.CountryId, &search.WiiNumber, &search.MacAddress, &search.NumberOfPosts, &search.TotalLikes, &search.IsMaster, &search.LastPost, &search.MiiData)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		search.MiiDataEncoded = base64.StdEncoding.EncodeToString(search.MiiData)
+
+		SearchResults = append(SearchResults, search)
+	}
+
+	c.HTML(http.StatusOK, "search_results.html", gin.H{
+		"SearchResults": SearchResults,
+		"SearchTerm":	 search,
+		"SearchType":    "Artisans",
 	})
 }
