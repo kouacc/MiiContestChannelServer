@@ -141,7 +141,7 @@
           </form>
           <div
             id="currentFilter"
-            class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all"
+            class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all cursor-pointer"
             style="border-radius: 18px"
             onclick="toggleOpen('filter');"
           >
@@ -172,34 +172,43 @@
               <i class="fa-solid fa-box-open" class="text-2xl"></i> Sort by New
             </a>
           </div>
+          <div
+        id="sizeIcon"
+        class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all cursor-pointer"
+        style="border-radius: 18px"
+        onclick="toggleSize();"
+      >
+      <i class="fa-solid fa-square-plus"></i>
+      </div>
         </div>
       </div>
-      <div class="grid magic_grid gap-3">
+      <div id="small" class="grid magic_grid gap-3">
         {{ range .Plaza }}
         <div
           class="flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700 hover:scale-102 hover:shadow-lg transition-all"
         >
           <a
             href="/panel/plaza/details/{{.EntryId}}"
-            class="flex flex-row items-center justify-between"
+            class="innerJustify flex flex-row items-center justify-between"
           >
-            <div class="flex flex-row items-center">
+            <div class="miiMain flex flex-row items-center">
               <p class="miiData hidden">{{.MiiDataEncoded}}</p>
               <img src="" class="miiImage h-28" />
-              <div class="flex flex-col">
+              <div class="flex flex-col justify-center">
                 <p class="flag text-9xl"></p>
-                <h1 class="flex flex-row items-center gap-3">
+                <h1 class="nickname flex flex-row items-center gap-3 justify-center">
                   {{.Nickname}}
                   <p class="opacity-30 font-normal font-serif">{{.Initials}}</p>
                 </h1>
                 <div class="flex flex-row gap-3">
                   <p class="gender">{{.Gender}}</p>
                   |
-                  <p class="country">{{.CountryId}}</p>
+                  <p class="flex flex-row gap-1 items-center"><span class="countryFlag">{{.CountryId}}</span><span class="country">{{.CountryId}}</span></p>
+                  <p class="display hidden"> | <i class="fa-solid fa-angle-up"></i> {{.Likes}} | <i class="fa-solid fa-angles-up"></i> {{.PermLikes}}</p>
                 </div>
               </div>
             </div>
-            <div class="mr-6 flex flex-row gap-3">
+            <div class="miiId mr-6 flex flex-row gap-3">
               <p class="text-xl">
                 <i class="fa-solid fa-angle-up"></i> {{.Likes}}
               </p>
@@ -208,7 +217,7 @@
               </p>
             </div>
           </a>
-          <div class="w-care ml-5 mr-5 flex flex-row gap-3">
+          <div class="wiiNum w-care ml-5 mr-5 flex flex-row gap-3">
             <p
               class="w-full p-1 pl-3 pr-3 bg-gray-300 text-gray-300 dark:bg-slate-800 dark:text-slate-800 active:bg-white active:text-black transition-all rounded-full text-center cursor-pointer select-none"
             >
@@ -219,15 +228,15 @@
               title="Keep clicked to reveal this Mii's Wii Number"
             ></i>
           </div>
-          <button class="delete_button" onclick='deleteEntry("{{.EntryId}}")'>
-            <i class="fa-solid fa-trash"></i> Delete this Mii
+          <button class="delete_button flex flex-row gap-1 items-center justify-center" onclick='deleteEntry("{{.EntryId}}")'>
+            <i class="fa-solid fa-trash"></i> <span class="deleteBtn">Delete this Mii</span>
           </button>
-          <p class="mr-5 mb-5 opacity-30 text-right">
+          <p class="minData mr-5 mb-5 opacity-30 text-right flex flex-row items-center justify-end gap-1">
             Id: {{.EntryId}} |
             <a href="/panel/artisans/details/{{.ArtisanId}}" class="underline"
               >{{.ArtisanName}} ({{.ArtisanId}})</a
             >
-            | {{.MiiId}}
+            <span class="miiId">| {{.MiiId}}</span>
             <i class="fa-solid fa-fingerprint"></i>
           </p>
         </div>
@@ -281,6 +290,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
+      applySavedSizeSetting();
+
       const miiElements = document.querySelectorAll(".miiData"); // Select all elements with the class 'miiData'
       miiElements.forEach(async (miiElement) => {
         const base64String = miiElement.innerHTML; // Assuming the base64 string is directly within the element
@@ -369,11 +380,22 @@
       });
 
       const countryElements = document.querySelectorAll(".country"); // Select all elements with the class 'country'
+      const flagElements = document.querySelectorAll(".countryFlag"); // Select all elements with the class 'flag'
+
       countryElements.forEach((countryElement) => {
-        const countryCode = parseInt(countryElement.innerHTML); // Assuming the country code is directly within the element
+        const countryCode = parseInt(countryElement.textContent, 10); // Use textContent and specify radix 10
         if (!isNaN(countryCode)) {
-          const countryName = getCountryName(countryCode);
-          countryElement.innerHTML = countryName.flag + " " + countryName.name;
+          const countryData = getCountryName(countryCode); // Assuming this function returns an object with 'name' and possibly 'flag'
+          countryElement.textContent = countryData.name; // Use textContent for safer text updates
+        }
+      });
+
+      flagElements.forEach((flagElement) => {
+        const countryCode = parseInt(flagElement.textContent, 10); // Use textContent and specify radix 10
+        if (!isNaN(countryCode)) {
+          const countryData = getCountryName(countryCode); // Reuse getCountryName or a similar function to get flag data
+          // Assuming countryData includes a 'flag' property that is the URL or emoji of the flag
+          flagElement.innerHTML = countryData.flag; // Use innerHTML if flag data includes HTML (e.g., an <img> tag for the flag)
         }
       });
 
@@ -710,6 +732,53 @@
       } else {
         element.classList.add("hidden");
         localStorage.setItem(id, "closed");
+      }
+    }
+
+    function toggleSize() {
+      const grid = document.getElementById("small");
+      if (grid.classList.contains("big")) {
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(400px, 1fr))";
+        document.getElementById("sizeIcon").innerHTML = '<i class="fa-solid fa-square-plus"></i>';
+        document.querySelectorAll(".wiiNum").forEach(element => element.style.display = "flex");
+        document.querySelectorAll(".miiMain").forEach(element => element.style.flexDirection = "row");
+        document.querySelectorAll(".miiId").forEach(element => element.style.display = "block");
+        document.querySelectorAll(".nickname").forEach(element => element.style.fontSize = "28px");
+        document.querySelectorAll(".country").forEach(element => element.style.display = "flex");   
+        document.querySelectorAll(".display").forEach(element => element.style.display = "none");     
+        document.querySelectorAll(".innerJustify").forEach(element => element.style.justifyContent = "space-between");
+        document.querySelectorAll(".deleteBtn").forEach(element => element.style.display = "block");
+        document.querySelectorAll(".delete_button").forEach(element => element.style.marginBottom = "0px");
+        document.querySelectorAll(".minData").forEach(element => element.style.display = "flex");
+        grid.classList.remove("big");
+        localStorage.setItem("gridSize", "small");
+      } else {
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(150px, 1fr))";
+        document.getElementById("sizeIcon").innerHTML = '<i class="fa-solid fa-square-minus"></i>';
+        document.querySelectorAll(".wiiNum").forEach(element => element.style.display = "none");
+        document.querySelectorAll(".miiMain").forEach(element => element.style.flexDirection = "column");
+        document.querySelectorAll(".miiMain").forEach(element => element.style.alignItems = "center");
+        document.querySelectorAll(".miiId").forEach(element => element.style.display = "none");
+        document.querySelectorAll(".nickname").forEach(element => element.style.fontSize = "24px");
+        document.querySelectorAll(".country").forEach(element => element.style.display = "none");
+        document.querySelectorAll(".display").forEach(element => element.style.display = "block");
+        document.querySelectorAll(".innerJustify").forEach(element => element.style.justifyContent = "center");
+        document.querySelectorAll(".deleteBtn").forEach(element => element.style.display = "none");
+        document.querySelectorAll(".delete_button").forEach(element => element.style.marginBottom = "16px");
+        document.querySelectorAll(".minData").forEach(element => element.style.display = "none");
+        grid.classList.add("big");
+        localStorage.setItem("gridSize", "big");
+      }
+    }
+
+    // Function to apply the saved size setting on page load
+    function applySavedSizeSetting() {
+      const savedSize = localStorage.getItem("gridSize");
+      const grid = document.getElementById("small");
+      if (savedSize === "big" && !grid.classList.contains("big")) {
+        toggleSize(); // This will switch to big if it's not already set
+      } else if (savedSize === "small" && grid.classList.contains("big")) {
+        toggleSize(); // This will switch to small if it's not already set
       }
     }
   </script>

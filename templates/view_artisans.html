@@ -140,35 +140,44 @@
               <i class="fas fa-search"></i>
             </button>
           </form>
+          <div
+          id="sizeIcon"
+          class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all cursor-pointer"
+          style="border-radius: 18px"
+          onclick="toggleSize();"
+        >
+        <i class="fa-solid fa-square-plus"></i>
+        </div>
         </div>
       </div>
 
-      <div class="grid magic_grid gap-3">
+      <div id="small" class="grid magic_grid gap-3">
         {{ range .Artisans }}
         <div
           class="p-3 flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700 hover:scale-102 hover:shadow-lg transition-all"
         >
-          <div class="flex flex-row items-center justify-between">
-            <div class="flex flex-row items-center">
+          <div class="innerJustify flex flex-row items-center justify-between">
+            <div class="miiMain flex flex-row items-center">
               <p class="miiData hidden">{{ .MiiDataEncoded }}</p>
               <img src="" class="miiImage h-28" />
               <a href="/panel/artisans/details/{{.ArtisanId}}">
                 <div class="flex flex-col">
                   <p class="flag text-9xl"></p>
-                  <h1 class="flex flex-row items-center gap-3">
+                  <h1 class="nickname flex flex-row items-center gap-3">
                     {{ .Name }}
                     <p class="opacity-30 font-normal font-serif">
                       {{ .ArtisanId }}
                     </p>
                   </h1>
-                  <div class="pt-2 flex flex-row">
+                  <div class="centerJustify pt-2 flex flex-row">
                     <p class="master">{{ .IsMaster }}</p>
-                    <p class="country">{{ .CountryId }}</p>
+                    <p class="flex flex-row gap-1 items-center"><span class="countryFlag">{{.CountryId}}</span><span class="country">{{.CountryId}}</span></p>
+                    <p class="display hidden"> | <i class="fa-solid fa-angle-up"></i> {{ .TotalLikes }} | <i class="fa-solid fa-users"></i> {{ .NumberOfPosts }}</p>
                   </div>
                 </div>
               </a>
             </div>
-            <div class="mr-6 flex flex-col gap-3">
+            <div class="minData mr-6 flex flex-col gap-3">
               <p class="text-xl text-right">
                 <i class="fa-solid fa-angle-up"></i> {{ .TotalLikes }}
               </p>
@@ -178,7 +187,7 @@
               </p>
             </div>
           </div>
-          <div class="pb-3 flex gap-3 flex-row items-center justify-between">
+          <div class="minData pb-3 flex gap-3 flex-row items-center justify-between">
             <p class="flex flex-col text-xl">
               <span class="opacity-30 text-sm">Wii Number</span>{{ .WiiNumber }}
             </p>
@@ -238,6 +247,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
+      applySavedSizeSetting();
+
       const miiElements = document.querySelectorAll(".miiData"); // Select all elements with the class 'miiData'
       miiElements.forEach(async (miiElement) => {
         const base64String = miiElement.innerHTML; // Assuming the base64 string is directly within the element
@@ -324,12 +335,24 @@
         });
       });
 
+      
       const countryElements = document.querySelectorAll(".country"); // Select all elements with the class 'country'
+      const flagElements = document.querySelectorAll(".countryFlag"); // Select all elements with the class 'flag'
+
       countryElements.forEach((countryElement) => {
-        const countryCode = parseInt(countryElement.innerHTML); // Assuming the country code is directly within the element
+        const countryCode = parseInt(countryElement.textContent, 10); // Use textContent and specify radix 10
         if (!isNaN(countryCode)) {
-          const countryName = getCountryName(countryCode);
-          countryElement.innerHTML = countryName.flag + " " + countryName.name;
+          const countryData = getCountryName(countryCode); // Assuming this function returns an object with 'name' and possibly 'flag'
+          countryElement.textContent = countryData.name; // Use textContent for safer text updates
+        }
+      });
+
+      flagElements.forEach((flagElement) => {
+        const countryCode = parseInt(flagElement.textContent, 10); // Use textContent and specify radix 10
+        if (!isNaN(countryCode)) {
+          const countryData = getCountryName(countryCode); // Reuse getCountryName or a similar function to get flag data
+          // Assuming countryData includes a 'flag' property that is the URL or emoji of the flag
+          flagElement.innerHTML = countryData.flag; // Use innerHTML if flag data includes HTML (e.g., an <img> tag for the flag)
         }
       });
 
@@ -675,6 +698,37 @@
       }
     }
 
+    function toggleSize() {
+      const grid = document.getElementById("small");
+      if (grid.classList.contains("big")) {
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(400px, 1fr))";
+        document.getElementById("sizeIcon").innerHTML = '<i class="fa-solid fa-square-plus"></i>';
+        document.querySelectorAll(".miiMain").forEach(element => element.style.flexDirection = "row");
+        document.querySelectorAll(".miiMain").forEach(element => element.style.alignItems = "space-between");
+        document.querySelectorAll(".nickname").forEach(element => element.style.fontSize = "28px");
+        document.querySelectorAll(".display").forEach(element => element.style.display = "none");     
+        document.querySelectorAll(".country").forEach(element => element.style.display = "flex");   
+        document.querySelectorAll(".minData").forEach(element => element.style.display = "flex");
+        document.querySelectorAll(".innerJustify").forEach(element => element.style.justifyContent = "space-between");
+        document.querySelectorAll(".centerJustify").forEach(element => element.style.justifyContent = "start");
+        grid.classList.remove("big");
+        localStorage.setItem("gridSize", "small");
+      } else {
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(150px, 1fr))";
+        document.getElementById("sizeIcon").innerHTML = '<i class="fa-solid fa-square-minus"></i>';
+        document.querySelectorAll(".miiMain").forEach(element => element.style.flexDirection = "column");
+        document.querySelectorAll(".miiMain").forEach(element => element.style.alignItems = "center");
+        document.querySelectorAll(".nickname").forEach(element => element.style.fontSize = "24px");
+        document.querySelectorAll(".display").forEach(element => element.style.display = "block");
+        document.querySelectorAll(".country").forEach(element => element.style.display = "none");
+        document.querySelectorAll(".minData").forEach(element => element.style.display = "none");
+        document.querySelectorAll(".innerJustify").forEach(element => element.style.justifyContent = "center");
+        document.querySelectorAll(".centerJustify").forEach(element => element.style.justifyContent = "center");
+        grid.classList.add("big");
+        localStorage.setItem("gridSize", "big");
+      }
+    }
+
     function toggleOpen(id) {
       const element = document.getElementById(id);
       if (element.style.display === "none") {
@@ -683,6 +737,16 @@
       } else {
         element.style.display = "none";
         localStorage.setItem(id, "closed");
+      }
+    }
+
+    function applySavedSizeSetting() {
+      const savedSize = localStorage.getItem("gridSize");
+      const grid = document.getElementById("small");
+      if (savedSize === "big" && !grid.classList.contains("big")) {
+        toggleSize(); // This will switch to big if it's not already set
+      } else if (savedSize === "small" && grid.classList.contains("big")) {
+        toggleSize(); // This will switch to small if it's not already set
       }
     }
   </script>

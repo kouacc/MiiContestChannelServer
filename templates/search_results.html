@@ -124,6 +124,7 @@
           </form>
       </div>
       {{ if .SearchResults}}
+      {{ if eq .SearchType "Plaza"}}
         {{ range .SearchResults }}
         <div
           class="flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700 hover:scale-102 hover:shadow-lg transition-all"
@@ -180,6 +181,53 @@
             <i class="fa-solid fa-fingerprint"></i>
           </p>
         </div>
+        {{end}}
+        {{else}}
+        {{ range .SearchResults }}
+        <div
+          class="p-3 flex flex-col gap-3 rounded-xl border-2 border-gray-100 bg-gray-50 dark:border-slate-600 dark:bg-slate-700 hover:scale-102 hover:shadow-lg transition-all"
+        >
+          <div class="flex flex-row items-center justify-between">
+            <div class="flex flex-row items-center">
+              <p class="miiData hidden">{{ .MiiDataEncoded }}</p>
+              <img src="" class="miiImage h-28" />
+              <a href="/panel/artisans/details/{{.ArtisanId}}">
+                <div class="flex flex-col">
+                  <p class="flag text-9xl"></p>
+                  <h1 class="flex flex-row items-center gap-3">
+                    {{ .Name }}
+                    <p class="opacity-30 font-normal font-serif">
+                      {{ .ArtisanId }}
+                    </p>
+                  </h1>
+                  <div class="pt-2 flex flex-row">
+                    <p class="master">{{ .IsMaster }}</p>
+                    <p class="country">{{ .CountryId }}</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="mr-6 flex flex-col gap-3">
+              <p class="text-xl text-right">
+                <i class="fa-solid fa-angle-up"></i> {{ .TotalLikes }}
+              </p>
+              <p class="text-xl text-right">
+                <i class="fa-solid fa-users"></i>
+                {{ .NumberOfPosts }}
+              </p>
+            </div>
+          </div>
+          <div class="pb-3 flex gap-3 flex-row items-center justify-between">
+            <p class="flex flex-col text-xl">
+              <span class="opacity-30 text-sm">Wii Number</span>{{ .WiiNumber }}
+            </p>
+            <div class="flex flex-col justify-end">
+              <span class="opacity-30 text-sm text-right">Last Post</span>
+              <p class="lastPost opacity-30 text-right">{{ .LastPost }}</p>
+            </div>
+          </div>
+        </div>
+        {{ end }}
         {{end}}
         {{else}}
         <div class="pt-8 pb-8 flex justify-center items-center bg-gray-300 dark:bg-slate-700 rounded-xl">
