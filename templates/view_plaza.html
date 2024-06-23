@@ -307,39 +307,34 @@
           }
         }
 
+        // Split the URL path and parse the current page number
         const urlParts = window.location.pathname.split("/");
         console.log(urlParts);
-        const pageNumber = urlParts[urlParts.length - 1];
-        document.getElementById("pageNumber").textContent = pageNumber;
-        console.log(pageNumber);
+        const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and parse the last part as the current page number
+        document.getElementById("pageNumber").textContent = currentPageNumber;
+        console.log(currentPageNumber);
 
-        if (isNaN(parseInt(pageNumber))) {
+        // Hide pagination if the current page number is not a number
+        if (isNaN(currentPageNumber)) {
           document.getElementById("pagination").style.display = "none";
         }
 
-        if (pageNumber > 1) {
-          const urlParts = window.location.pathname.split('/');
-          const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and get the last part as the current page number
+        // Handle previous page link
+        if (currentPageNumber > 1) {
           const newPageNumber = currentPageNumber - 1; // For previous page, decrement the current page number
-
-          // Join the parts back together and append the new page number
           const newUrl = `${urlParts.join('/')}/${newPageNumber}`;
-
           document.getElementById("prevPage").href = newUrl;
         } else {
           document.getElementById("prevPage").style.opacity = "0.3";
           document.getElementById("prevPage").style.pointerEvents = "none";
         }
 
-        if (pageNumber < document.getElementById("pages").textContent) {
-          const urlParts = window.location.pathname.split('/');
-          const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and get the last part as the current page number
-          const newPageNumber = currentPageNumber + 1; // For next page, increase the current page number
-
-          // Join the parts back together and append the new page number
+        // Handle next page link
+        const totalPages = parseInt(document.getElementById("pages").textContent, 10); // Parse total pages as an integer
+        if (currentPageNumber < totalPages) {
+          const newPageNumber = currentPageNumber + 1; // For next page, increment the current page number
           const newUrl = `${urlParts.join('/')}/${newPageNumber}`;
-
-          document.getElementById("prevPage").href = newUrl;
+          document.getElementById("nextPage").href = newUrl;
         } else {
           document.getElementById("nextPage").style.opacity = "0.3";
           document.getElementById("nextPage").style.pointerEvents = "none";
