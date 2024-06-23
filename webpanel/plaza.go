@@ -10,6 +10,7 @@ import (
 
 const (
 	GetPlaza = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id`
+	GetPages = `SELECT COUNT(*) FROM miis`
 	DeleteMii = `DELETE FROM miis WHERE entry_id = $1`
 	GetMiiDetails = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE entry_id = $1`
 	GetArtisanInfo = `SELECT name FROM artisans where artisan_id = $1`
@@ -54,6 +55,17 @@ func (w *WebPanel) ViewPlaza(c *gin.Context) {
 		return
 	}
 
+	//calculate number of pages
+	var pages int
+	err = w.Pool.QueryRow(w.Ctx, GetPages).Scan(&pages)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+	pages = (pages + itemsPerPage - 1) / itemsPerPage
+
 	var plaza []Plaza
 	for rows.Next() {
 		plazadata := Plaza{}
@@ -83,8 +95,8 @@ func (w *WebPanel) ViewPlaza(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "view_plaza.html", gin.H{
 		"numberOfMiis": len(plaza),
-		"Plaza":         plaza,
-
+		"Plaza":        plaza,
+		"Pages": 		pages,
 
 	})
 }
@@ -152,6 +164,17 @@ func (w *WebPanel) ViewPlazaNew(c *gin.Context) {
 		return
 	}
 
+	//calculate number of pages
+	var pages int
+	err = w.Pool.QueryRow(w.Ctx, GetPages).Scan(&pages)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+	pages = (pages + itemsPerPage - 1) / itemsPerPage
+
 	var plaza []Plaza
 	for rows.Next() {
 		plazadata := Plaza{}
@@ -181,7 +204,8 @@ func (w *WebPanel) ViewPlazaNew(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "view_plaza.html", gin.H{
 		"numberOfMiis": len(plaza),
-		"Plaza":         plaza,
+		"Plaza":        plaza,
+		"Pages": 		pages,
 	})
 }
 

@@ -50,6 +50,17 @@ func (w *WebPanel) ViewArtisans(c *gin.Context) {
 		return
 	}
 
+	//calculate number of pages
+	var pages int
+	err = w.Pool.QueryRow(w.Ctx, GetPages).Scan(&pages)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+	pages = (pages + itemsPerPage - 1) / itemsPerPage
+
 	var artisans []Artisans
 	for rows.Next() {
 		artisan := Artisans{}
@@ -69,6 +80,7 @@ func (w *WebPanel) ViewArtisans(c *gin.Context) {
 	c.HTML(http.StatusOK, "view_artisans.html", gin.H{
 		"numberOfArtisans": len(artisans),
 		"Artisans":         artisans,
+		"Pages": 			pages,
 
 	})
 }
