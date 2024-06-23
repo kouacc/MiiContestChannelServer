@@ -15,6 +15,7 @@ type WebPanel struct {
 	Ctx  context.Context
 	Salt []byte
 	Config
+	AuthConfig *AppAuthConfig
 }
 
 type JWTClaims struct {
@@ -45,5 +46,3 @@ type AppAuthConfig struct {
     OAuth2Config *oauth2.Config
     Provider     *oidc.Provider
 }
-
-var AuthConfig *AppAuthConfig
