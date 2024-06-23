@@ -115,11 +115,32 @@
       {{if .Error}}
       <p style="color: red">{{.Error}}</p>
       {{end}}
-      <div class="flex flex-row items-center justify-between">
+
+      <div class="flex items-center justify-between">
         <h1>Artisans</h1>
-        <h2 class="opacity-30">
-          There are {{ .numberOfArtisans }} Mii Artisans.
-        </h2>
+        <div class="flex flex-row gap-1">
+          <form
+            action="/panel/artisans/search"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              type="text"
+              name="search"
+              placeholder="There are {{ .numberOfArtisans }} Mii Artisans..."
+              class="p-3 bg-gray-200 dark:bg-slate-500 hover:bg-gray-300 dark:hover:bg-slate-600 focus:bg-gray-300 dark:focus:bg-slate-700 transition-all relative"
+              style="border-radius: 18px 4px 4px 18px"
+              required
+            />
+            <button
+              type="submit"
+              class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all"
+              style="border-radius: 4px 18px 18px 4px"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+        </div>
       </div>
 
       <div class="grid magic_grid gap-3">
@@ -169,7 +190,24 @@
         </div>
         {{ end }}
       </div>
-      <br />
+      <div id="pagination" class="pt-3 pb-6 flex flex-row items-center justify-between">
+        <p class="opacity-60">
+          Showing page <b id="pageNumber"></b> of <b>{{ .Pages }}</b>.
+        </p>
+        <div>
+          <a
+            id="prevPage"
+            class="p-3 pl-4 pr-4 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-slate-600 dark:hover:bg-slate-700"
+            ><i class="fa-solid fa-chevron-left"></i
+          ></a>
+          <a
+            id="nextPage"
+            class="p-3 pl-4 pr-4 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-slate-600 dark:hover:bg-slate-700"
+            ><i class="fa-solid fa-chevron-right"></i
+          ></a>
+        </div>
+      </div>
+      <p id="pages" class="hidden">{{ .Pages }}</p>
       <hr />
       <p class="pt-2">©2020 - 2024 WiiLink Team</p>
     </main>
@@ -213,6 +251,45 @@
           } catch (error) {
             console.error("Failed to render Mii:", error);
           }
+        }
+
+
+        const urlParts = window.location.pathname.split("/");
+        console.log(urlParts);
+        const pageNumber = urlParts[urlParts.length - 1];
+        document.getElementById("pageNumber").textContent = pageNumber;
+        console.log(pageNumber);
+
+        if (isNaN(parseInt(pageNumber))) {
+          document.getElementById("pagination").style.display = "none";
+        }
+
+        if (pageNumber > 1) {
+          const urlParts = window.location.pathname.split('/');
+          const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and get the last part as the current page number
+          const newPageNumber = currentPageNumber - 1; // For previous page, decrement the current page number
+
+          // Join the parts back together and append the new page number
+          const newUrl = `${urlParts.join('/')}/${newPageNumber}`;
+
+          document.getElementById("prevPage").href = newUrl;
+        } else {
+          document.getElementById("prevPage").style.opacity = "0.3";
+          document.getElementById("prevPage").style.pointerEvents = "none";
+        }
+
+        if (pageNumber < document.getElementById("pages").textContent) {
+          const urlParts = window.location.pathname.split('/');
+          const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and get the last part as the current page number
+          const newPageNumber = currentPageNumber + 1; // For next page, increase the current page number
+
+          // Join the parts back together and append the new page number
+          const newUrl = `${urlParts.join('/')}/${newPageNumber}`;
+
+          document.getElementById("prevPage").href = newUrl;
+        } else {
+          document.getElementById("nextPage").style.opacity = "0.3";
+          document.getElementById("nextPage").style.pointerEvents = "none";
         }
 
         document.querySelectorAll(".lastPost").forEach((element) => {
