@@ -147,5 +147,6 @@ func (w *WebPanel) SearchPlaza(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "search_results.html", gin.H{
 		"SearchResults": SearchResults,
+		"SearchTerm":	 search,
 	})
 }
