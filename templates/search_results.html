@@ -123,6 +123,7 @@
           </button>
           </form>
       </div>
+      <div class="grid magic_grid gap-3">
       {{ if .SearchResults}}
       {{ if eq .SearchType "Plaza"}}
         {{ range .SearchResults }}
@@ -234,6 +235,7 @@
           <p class="mt-3 text-xl opacity-60 text-center"><i class="fa-solid fa-triangle-exclamation text-6xl"></i><br><br>Your search for "{{ .SearchTerm }}" yielded no results.</p>
       </div>
         {{end}}
+      </div>
     <br />
 <hr />
 <br />

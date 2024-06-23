@@ -292,27 +292,32 @@
     document.addEventListener("DOMContentLoaded", async function () {
       applySavedSizeSetting();
 
-      const miiElements = document.querySelectorAll(".miiData"); // Select all elements with the class 'miiData'
-      miiElements.forEach(async (miiElement) => {
-        const base64String = miiElement.innerHTML; // Assuming the base64 string is directly within the element
-        if (base64String) {
-          try {
-            const miiImageUrl = await renderMii(base64String);
-            console.log(miiImageUrl);
-            // Assuming there's a way to associate the miiImage with the miiElement, like a data attribute or adjacent element
-            const imgElement = miiElement.nextElementSibling; // Example: the <img> is right next to the miiElement
-            imgElement.src = miiImageUrl;
-          } catch (error) {
-            console.error("Failed to render Mii:", error);
-          }
+      let urlParts = window.location.pathname.split("/");
+      const plazaIndex = urlParts.indexOf("plaza");
+        let iconHtml = "";
+
+        // Check if the segment after "plaza" exists and what it is
+        const nextSegment =
+          plazaIndex >= 0 && plazaIndex < urlParts.length - 1
+            ? urlParts[plazaIndex + 1]
+            : "";
+            console.log(nextSegment);
+
+        if (!isNaN(parseInt(nextSegment))) {
+          // If the next segment is a number, it's a page number, default to the ID icon
+          iconHtml =
+            '<i class="fa-solid fa-arrow-down-1-9"></i>';
+        } else if (nextSegment === "top") {
+          iconHtml = '<i class="fa-solid fa-medal"></i>';
+        } else if (nextSegment === "new") {
+          iconHtml = '<i class="fa-solid fa-box-open"></i>';
         }
 
-        // Split the URL path and parse the current page number
-        const urlParts = window.location.pathname.split("/");
-        console.log(urlParts);
-        const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and parse the last part as the current page number
+        document.getElementById("currentFilter").innerHTML = iconHtml;
+
+                // Split the URL path and parse the current page number
+                const currentPageNumber = parseInt(urlParts.pop(), 10); // Remove and parse the last part as the current page number
         document.getElementById("pageNumber").textContent = currentPageNumber;
-        console.log(currentPageNumber);
 
         // Hide pagination if the current page number is not a number
         if (isNaN(currentPageNumber)) {
@@ -340,27 +345,19 @@
           document.getElementById("nextPage").style.pointerEvents = "none";
         }
 
-        const plazaIndex = urlParts.indexOf("plaza");
-        let iconHtml = "";
-
-        // Check if the segment after "plaza" exists and what it is
-        const nextSegment =
-          plazaIndex >= 0 && plazaIndex < urlParts.length - 1
-            ? urlParts[plazaIndex + 1]
-            : "";
-
-        if (!isNaN(parseInt(nextSegment))) {
-          // If the next segment is a number, it's a page number, default to the ID icon
-          iconHtml =
-            '<i class="fa-solid fa-arrow-down-1-9" class="text-2xl"></i>';
-        } else if (nextSegment === "top") {
-          iconHtml = '<i class="fa-solid fa-medal" class="text-2xl"></i>';
-        } else if (nextSegment === "new") {
-          iconHtml = '<i class="fa-solid fa-box-open" class="text-2xl"></i>';
+      const miiElements = document.querySelectorAll(".miiData"); // Select all elements with the class 'miiData'
+      miiElements.forEach(async (miiElement) => {
+        const base64String = miiElement.innerHTML; // Assuming the base64 string is directly within the element
+        if (base64String) {
+          try {
+            const miiImageUrl = await renderMii(base64String);
+            // Assuming there's a way to associate the miiImage with the miiElement, like a data attribute or adjacent element
+            const imgElement = miiElement.nextElementSibling; // Example: the <img> is right next to the miiElement
+            imgElement.src = miiImageUrl;
+          } catch (error) {
+            console.error("Failed to render Mii:", error);
+          }
         }
-
-        document.getElementById("currentFilter").innerHTML = iconHtml;
-
 
         const ids = ["toggleOpen"];
         ids.forEach((id) => {
