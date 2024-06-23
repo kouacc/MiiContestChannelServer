@@ -86,7 +86,8 @@
             |
             <a href="/panel/plaza"
               ><button
-                class="p-2 bg-gray-200 dark:bg-slate-600 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"
+              id="plazaButton"
+                class="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"
               >
                 <i class="fa-solid fa-users"></i> Plaza
               </button></a
@@ -94,6 +95,7 @@
             |
             <a href="/panel/artisans"
               ><button
+              id="artisansButton"
                 class="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-md transition-all"
               >
                 <i class="fa-solid fa-brush"></i> Mii Artisans
@@ -113,7 +115,7 @@
         </p>
       </div>
       <div class="flex items-center justify-between">
-        <h1>Search Results</h1>
+        <h1 id="title">Search Results</h1>
         <form id="searchForm" action="/panel/plaza/search" method="post" enctype="multipart/form-data">
           <input type="text" name="search" placeholder="Search..." class="p-3 bg-gray-200 dark:bg-slate-500 hover:bg-gray-300 dark:hover:bg-slate-600 focus:bg-gray-300 dark:focus:bg-slate-700 transition-all relative" style="border-radius:18px 4px 4px 18px;" required/>
           <button type="submit" class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all" style="border-radius:4px 18px 18px 4px;">
@@ -220,8 +222,12 @@
             const formElement = document.getElementById("searchForm");
             
             if (urlPath.includes("/panel/artisans/search")) {
+              document.getElementById("title").innerHTML = "Search Results - Mii Artisans";
+              document.getElementById("artisansButton").classList.add("bg-gray-200", "dark:bg-slate-600");
               formElement.action = "/panel/artisans/search";
             } else if (urlPath.includes("/panel/plaza/search")) {
+              document.getElementById("title").innerHTML = "Search Results - Plaza";
+              document.getElementById("plazaButton").classList.add("bg-gray-200", "dark:bg-slate-600");
               formElement.action = "/panel/plaza/search";
             }
 
