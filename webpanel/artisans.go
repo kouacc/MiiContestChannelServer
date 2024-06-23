@@ -135,7 +135,7 @@ func (w *WebPanel) ViewArtisanDetails(c *gin.Context) {
 func (w *WebPanel) SearchArtisans(c *gin.Context) {
 	search := c.PostForm("search")
 
-	rows, err := w.Pool.Query(w.Ctx, SearchMiis, search)
+	rows, err := w.Pool.Query(w.Ctx, SearchArtisans, search)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
