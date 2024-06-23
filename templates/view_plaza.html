@@ -118,12 +118,11 @@
       <div class="flex items-center justify-between">
         <h1>Plaza</h1>
         <form action="/panel/plaza/search" method="post" enctype="multipart/form-data">
-          <input type="text" name="search" placeholder="Search..." />
-          <input type="submit" value="Search" />
+          <input type="text" name="search" placeholder="There are {{ .numberOfMiis }} Miis in the Plaza..." class="p-3 bg-gray-200 dark:bg-slate-500 hover:bg-gray-300 dark:hover:bg-slate-600 focus:bg-gray-300 dark:focus:bg-slate-700 transition-all relative" style="border-radius:18px 4px 4px 18px;"/>
+          <button type="submit" class="p-3 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 transition-all" style="border-radius:4px 18px 18px 4px;">
+            <i class="fas fa-search"></i>
+          </button>
           </form>
-        <h2 class="opacity-60">
-          There are {{ .numberOfMiis }} Miis in the Plaza.
-        </h2>
       </div>
       <div class="grid magic_grid gap-3">
         {{ range .Plaza }}
