@@ -12,6 +12,8 @@ const (
 	GetMiiDetails = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE entry_id = $1`
 	GetArtisanInfo = `SELECT name FROM artisans where artisan_id = $1`
 	SearchMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE nickname ILIKE '%' || $1 || '%' ORDER BY entry_id`
+	GetPlazaTop50 = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY likes DESC LIMIT 50`
+	GetPlazaNew = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis ORDER BY entry_id DESC`
 )
 
 type Plaza struct {
@@ -71,6 +73,91 @@ func (w *WebPanel) ViewPlaza(c *gin.Context) {
 		"Plaza":         plaza,
 
 
+	})
+}
+
+
+func (w *WebPanel) ViewPlazaTop50(c *gin.Context) {
+	rows, err := w.Pool.Query(w.Ctx, GetPlazaTop50)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	var plaza []Plaza
+	for rows.Next() {
+		plazadata := Plaza{}
+		err = rows.Scan(&plazadata.EntryId, &plazadata.ArtisanId, &plazadata.Initials, &plazadata.Nickname, &plazadata.Gender, &plazadata.CountryId, &plazadata.WiiNumber, &plazadata.MiiId, &plazadata.Likes, &plazadata.PermLikes, &plazadata.MiiData)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		plazadata.MiiDataEncoded = base64.StdEncoding.EncodeToString(plazadata.MiiData)
+
+		row := w.Pool.QueryRow(w.Ctx, GetArtisanInfo, plazadata.ArtisanId)
+		var artisanName string
+		err = row.Scan(&artisanName)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		plazadata.ArtisanName = artisanName
+
+		plaza = append(plaza, plazadata)
+	}
+
+	c.HTML(http.StatusOK, "view_plaza.html", gin.H{
+		"numberOfMiis": len(plaza),
+		"Plaza":         plaza,
+	})
+}
+
+func (w *WebPanel) ViewPlazaNew(c *gin.Context) {
+	rows, err := w.Pool.Query(w.Ctx, GetPlazaNew)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	var plaza []Plaza
+	for rows.Next() {
+		plazadata := Plaza{}
+		err = rows.Scan(&plazadata.EntryId, &plazadata.ArtisanId, &plazadata.Initials, &plazadata.Nickname, &plazadata.Gender, &plazadata.CountryId, &plazadata.WiiNumber, &plazadata.MiiId, &plazadata.Likes, &plazadata.PermLikes, &plazadata.MiiData)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		plazadata.MiiDataEncoded = base64.StdEncoding.EncodeToString(plazadata.MiiData)
+
+		row := w.Pool.QueryRow(w.Ctx, GetArtisanInfo, plazadata.ArtisanId)
+		var artisanName string
+		err = row.Scan(&artisanName)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		plazadata.ArtisanName = artisanName
+
+		plaza = append(plaza, plazadata)
+	}
+
+	c.HTML(http.StatusOK, "view_plaza.html", gin.H{
+		"numberOfMiis": len(plaza),
+		"Plaza":         plaza,
 	})
 }
 
