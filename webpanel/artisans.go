@@ -14,6 +14,7 @@ const (
 	GetArtisanDetails = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans WHERE artisan_id = $1`
 	GetArtisansMiis = `SELECT entry_id, artisan_id, initials, nickname, gender, country_id, wii_number, mii_id, likes, perm_likes, mii_data FROM miis WHERE artisan_id = $1` 
 	SearchArtisans = `SELECT artisan_id, name, country_id, wii_number, mac_address, number_of_posts, total_likes, is_master, last_post, mii_data FROM artisans WHERE name ILIKE '%' || $1 || '%' ORDER BY artisan_id`
+GetPagesArtisans = `SELECT COUNT(*) FROM artisans`
 )
 
 type Artisans struct {
@@ -52,7 +53,7 @@ func (w *WebPanel) ViewArtisans(c *gin.Context) {
 
 	//calculate number of pages
 	var pages int
-	err = w.Pool.QueryRow(w.Ctx, GetPages).Scan(&pages)
+	err = w.Pool.QueryRow(w.Ctx, GetPagesArtisans).Scan(&pages)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
