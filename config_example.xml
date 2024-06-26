@@ -10,4 +10,17 @@
     <databaseAddress>127.0.0.1</databaseAddress>
     <databaseName>cmoc</databaseName>
     <assetsPath>mc-assets</assetsPath>
+
+    <!-- For debug purposes only-->
+    <!-- Turns off the authentification middleware-->
+    <auth_mode>true</auth_mode>
+
+    <!-- OIDC credentials/data -->
+    <oidc>
+        <clientID>clientID</clientID>
+        <clientSecret>clientSecret</clientSecret>
+        <redirectURI>http://localhost:9011/panel/authorize</redirectURI>
+        <scopes>openid profile</scopes>
+        <provider>provider</provider>
+    </oidc>
 </Config>
