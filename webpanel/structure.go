@@ -40,6 +40,7 @@ type Config struct {
 	Address         string `xml:"address"`
 	AssetsPath      string `xml:"assetsPath"`
 	OIDCConfig	    OIDCConfig `xml:"oidc"`
+	AuthMode 	  	bool `xml:"auth_mode"`
 }
 
 type AppAuthConfig struct {

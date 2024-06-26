@@ -34,7 +34,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create OIDC provider: %v", err)
 	}
-	
+
 	authConfig := &webpanel.AppAuthConfig{
 		OAuth2Config: &oauth2.Config{
 			ClientID:     config.OIDCConfig.ClientID,
@@ -77,7 +77,9 @@ func main() {
 	r.GET("/panel/authorize", panel.FinishPanelHandler)
 
 	auth := r.Group("/panel")
-	auth.Use(middleware.AuthenticationMiddleware())
+	if config.AuthMode {
+		auth.Use(middleware.AuthenticationMiddleware())
+	}
 	{
 		auth.GET("/admin", panel.AdminPage)
 		auth.GET("/contests", panel.ViewContests)

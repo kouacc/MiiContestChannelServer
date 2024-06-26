@@ -11,6 +11,10 @@
     <databaseName>cmoc</databaseName>
     <assetsPath>mc-assets</assetsPath>
 
+    <!-- For debug purposes only-->
+    <!-- Turns off the authentification middleware-->
+    <auth_mode>true</auth_mode>
+
     <!-- OIDC credentials/data -->
     <oidc>
         <clientID>clientID</clientID>
