@@ -966,16 +966,6 @@ h1 {
   border-radius: 0.75rem;
 }
 
-.rounded-b-2xl {
-  border-bottom-right-radius: 1rem;
-  border-bottom-left-radius: 1rem;
-}
-
-.rounded-b-lg {
-  border-bottom-right-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-}
-
 .rounded-l-\[18px\] {
   border-top-left-radius: 18px;
   border-bottom-left-radius: 18px;
@@ -1006,16 +996,6 @@ h1 {
   border-bottom-right-radius: 0.5rem;
 }
 
-.rounded-t-2xl {
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-}
-
-.rounded-t-lg {
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-}
-
 .border {
   border-width: 1px;
 }
@@ -1028,16 +1008,8 @@ h1 {
   border-width: 5px;
 }
 
-.border-t-2 {
-  border-top-width: 2px;
-}
-
 .border-t-4 {
   border-top-width: 4px;
-}
-
-.border-black\/10 {
-  border-color: rgb(0 0 0 / 0.1);
 }
 
 .border-blue-400 {
@@ -1125,11 +1097,6 @@ h1 {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
-}
-
 .bg-\[url\(\'https\:\/\/rc24\.xyz\/goodies\/wallpapers\/CMO_Channel_BG_orange_1600x900\.png\'\)\] {
   background-image: url('https://rc24.xyz/goodies/wallpapers/CMO_Channel_BG_orange_1600x900.png');
 }
@@ -1160,10 +1127,6 @@ h1 {
 
 .p-8 {
   padding: 2rem;
-}
-
-.p-\[18px\] {
-  padding: 18px;
 }
 
 .px-5 {
@@ -1579,6 +1542,21 @@ h1 {
 .hover\:bg-amber-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(180 83 9 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-blue-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-gray-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-green-500:hover {

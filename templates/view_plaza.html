@@ -191,15 +191,15 @@
               <img src="" class="miiImage h-28" />
               <div class="flex flex-col justify-center">
                 <p class="flag text-9xl"></p>
-                <h1 class="nickname flex flex-row items-center gap-3 justify-center">
+                <h1 class="mb-3 nickname flex flex-col items-center justify-center">
                   {{.Nickname}}
-                  <p class="opacity-30 font-normal font-serif">{{.Initials}}</p>
+                  <p class="mt-1 opacity-30 font-normal font-serif text-sm">{{.Initials}}</p>
                 </h1>
-                <div class="flex flex-row gap-3">
+                <div class="flex flex-row gap-3 items-center">
                   <p class="gender">{{.Gender}}</p>
                   |
                   <p class="flex flex-row gap-1 items-center"><span class="countryFlag">{{.CountryId}}</span><span class="country">{{.CountryId}}</span></p>
-                  <p class="display hidden"> | <i class="fa-solid fa-angle-up"></i> {{.Likes}} | <i class="fa-solid fa-angles-up"></i> {{.PermLikes}}</p>
+                  <p class="flex flex-row flex-nowrap items-center gap-1"> | <i class="fa-solid fa-angle-up"></i> {{.Likes}} | <i class="fa-solid fa-angles-up"></i> {{.PermLikes}}</p>
                 </div>
               </div>
             </div>
