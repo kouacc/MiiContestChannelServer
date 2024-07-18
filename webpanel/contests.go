@@ -3,6 +3,7 @@ package webpanel
 import (
 	"bytes"
 	"fmt"
+	"github.com/WiiLink24/MiiContestChannel/common"
 	"github.com/WiiLink24/MiiContestChannel/contest"
 	"github.com/gin-gonic/gin"
 	"io"
@@ -124,7 +125,7 @@ func (w *WebPanel) AddContestPOST(c *gin.Context) {
 		}
 
 		// Create encrypted thumbnail
-		err = contest.MakeThumbnail(resized, contestId)
+		err = contest.MakePhoto(common.Thumbnail, resized, contestId)
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
 				"Error": err.Error(),
@@ -134,6 +135,52 @@ func (w *WebPanel) AddContestPOST(c *gin.Context) {
 
 		// Write unencrypted thumbnail
 		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/thumbnail.jpg", w.Config.AssetsPath, contestId), resized, 0666)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+	}
+
+	if hasSouvenir {
+		f, err := souvenir.Open()
+		defer f.Close()
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		buffer := new(bytes.Buffer)
+		_, err = io.Copy(buffer, f)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		resized, err := resize(buffer, 512, 384)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		// Create encrypted thumbnail
+		err = contest.MakePhoto(common.Souvenir, resized, contestId)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+
+		// Write unencrypted thumbnail
+		err = os.WriteFile(fmt.Sprintf("%s/contest/%d/souvenir.jpg", w.Config.AssetsPath, contestId), resized, 0666)
 		if err != nil {
 			c.HTML(http.StatusInternalServerError, "add_contest.html", gin.H{
 				"Error": err.Error(),

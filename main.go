@@ -67,6 +67,9 @@ func main() {
 	r.POST("/cgi-bin/check.cgi", check)
 	r.POST("/cgi-bin/post.cgi", post)
 	r.POST("/cgi-bin/vote.cgi", vote)
+	r.GET("/cgi-bin/info.cgi", info)
+	r.GET("/cgi-bin/ownsearch.cgi", ownSearch)
+	r.GET("/cgi-bin/search.cgi", search)
 
 	fmt.Printf("Starting HTTP connection (%s)...\nNot using the usual port for HTTP?\nBe sure to use a proxy, otherwise the Wii can't connect!\n", config.Address)
 	log.Fatalln(r.Run(config.Address))

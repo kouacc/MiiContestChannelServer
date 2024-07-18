@@ -3,11 +3,12 @@ module MiiContestChannelServer
 go 1.19
 
 require (
-	github.com/WiiLink24/MiiContestChannel v0.0.0-20240620140949-2f5f0c3ad923
+	github.com/WiiLink24/MiiContestChannel v0.0.0-20240718230034-24654496dc79
 	github.com/WiiLink24/nwc24 v0.0.0-20230608020206-b86d9e90fb1d
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jackc/pgx/v4 v4.18.3
+	golang.org/x/image v0.18.0
 )
 
 require (
@@ -40,10 +41,9 @@ require (
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/wii-tools/lzx v0.0.0-20231115152519-4c1183c96cc6 // indirect
 	golang.org/x/arch v0.8.0 // indirect
-	golang.org/x/crypto v0.24.0 // indirect
-	golang.org/x/image v0.17.0 // indirect
-	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/crypto v0.25.0 // indirect
+	golang.org/x/net v0.27.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
